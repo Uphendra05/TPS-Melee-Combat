@@ -13,31 +13,36 @@ public class PlayerMovement : MonoBehaviour
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
-
     private CharacterController controller;
     private Vector3 velocity;
     public bool isGrounded;
 
 
+
+    [Header("Animation Properties")]
     private Animator m_Animator;
+    private float _targetRotation = 0.0f;
+    private float blendTreeVelocity;
+    private int blendTreeID;
+
+
+    [Header("Camera Settings")]
     public float mouseSens;
     public Transform cameraFollowTarget;
-    private float _targetRotation = 0.0f;
-
-
     private float _cinemachineTargetYaw;
     private float _cinemachineTargetPitch;
     public float CameraAngleOverride;
-
     public float TopClamp = 70.0f;
-
     public float BottomClamp = -30.0f;
-
     private const float _threshold = 0.01f;
-
     private Camera _camera;
     private float _rotationVelocity;
-    private float _verticalVelocity;
+
+
+
+
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -46,6 +51,8 @@ public class PlayerMovement : MonoBehaviour
         cameraFollowTarget.transform.rotation = Quaternion.Euler(0.0f,0.0f, 0.0f);
         controller = GetComponent<CharacterController>();
         _camera = Camera.main;
+
+        blendTreeID = Animator.StringToHash("Velocity");
     }
 
     // Update is called once per frame
@@ -53,8 +60,6 @@ public class PlayerMovement : MonoBehaviour
     {
 
        
-        
-
        
         if(UnityEngine.Input.GetKeyDown(KeyCode.LeftAlt)) 
         {
@@ -65,18 +70,18 @@ public class PlayerMovement : MonoBehaviour
         if (UnityEngine.Input.GetKey(KeyCode.LeftShift))
         {
             moveSpeed = 7f;
-
-            m_Animator.SetBool("IsRun", true);
+            blendTreeVelocity = 1;
         }
         else
         {
             moveSpeed = 2f;
 
-            m_Animator.SetBool("IsRun", false);
-
         }
 
+
+
         Move();
+
     }
 
     private void LateUpdate()
@@ -99,8 +104,12 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 moveDir = new Vector3(x, 0.0f, z).normalized;
 
+        m_Animator.SetFloat(blendTreeID, blendTreeVelocity, 0.1f, Time.deltaTime);
+        Debug.Log(moveDir.magnitude);
+
         if (moveDir.magnitude > 0.1f)
         {
+            blendTreeVelocity = 0.5f;
             _targetRotation = Mathf.Atan2(moveDir.x, moveDir.z) * Mathf.Rad2Deg +
                               _camera.transform.eulerAngles.y;
 
@@ -111,14 +120,14 @@ public class PlayerMovement : MonoBehaviour
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 
             controller.Move(targetDirection.normalized * (moveSpeed * Time.deltaTime));
-            m_Animator.SetBool("IsWalk", true);
 
         }
         else
         {
-            m_Animator.SetBool("IsWalk", false);
-            m_Animator.SetTrigger("Idle");
+            blendTreeVelocity = 0;
+
         }
+
 
         if (UnityEngine.Input.GetButtonDown("Jump") && isGrounded)
         {
