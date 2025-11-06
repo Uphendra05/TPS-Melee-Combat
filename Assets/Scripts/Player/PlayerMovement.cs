@@ -24,6 +24,10 @@ public class PlayerMovement : MonoBehaviour
     private float _targetRotation = 0.0f;
     private float blendTreeVelocity;
     private int blendTreeID;
+    private int dodgeAnimationID;
+    private int jumpAnimationID;
+    private int groundedAnimationID;
+    private int freefallAnimationID;
 
 
     [Header("Camera Settings")]
@@ -53,6 +57,10 @@ public class PlayerMovement : MonoBehaviour
         _camera = Camera.main;
 
         blendTreeID = Animator.StringToHash("Velocity");
+        dodgeAnimationID = Animator.StringToHash("IsDodge");
+        jumpAnimationID = Animator.StringToHash("IsJump");
+        freefallAnimationID = Animator.StringToHash("IsFreefall");
+        groundedAnimationID = Animator.StringToHash("IsGrounded");
     }
 
     // Update is called once per frame
@@ -63,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
        
         if(UnityEngine.Input.GetKeyDown(KeyCode.LeftAlt)) 
         {
-            m_Animator.SetTrigger("Dodge");
+            m_Animator.SetTrigger(dodgeAnimationID);
 
         }
 
@@ -94,21 +102,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        
 
-        if (isGrounded && velocity.y < 0)
-            velocity.y = -2f;
-
-        float x = UnityEngine.Input.GetAxis("Horizontal");
-        float z = UnityEngine.Input.GetAxis("Vertical");
+        float x = UnityEngine.Input.GetAxisRaw("Horizontal");
+        float z = UnityEngine.Input.GetAxisRaw("Vertical");
 
         Vector3 moveDir = new Vector3(x, 0.0f, z).normalized;
 
         m_Animator.SetFloat(blendTreeID, blendTreeVelocity, 0.1f, Time.deltaTime);
+
         Debug.Log(moveDir.magnitude);
 
         if (moveDir.magnitude > 0.1f)
         {
+
             blendTreeVelocity = 0.5f;
             _targetRotation = Mathf.Atan2(moveDir.x, moveDir.z) * Mathf.Rad2Deg +
                               _camera.transform.eulerAngles.y;
@@ -128,13 +135,34 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask, QueryTriggerInteraction.Ignore);
+        m_Animator.SetBool(groundedAnimationID, isGrounded);
 
-        if (UnityEngine.Input.GetButtonDown("Jump") && isGrounded)
+        if (isGrounded && velocity.y < 0)
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            m_Animator.SetTrigger("Jump");
+
+            velocity.y = -2f;
+
+            if (UnityEngine.Input.GetButtonDown("Jump") && isGrounded)
+            {
+                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+                m_Animator.SetBool(jumpAnimationID, true);
+                m_Animator.SetBool(groundedAnimationID, false);
+
+            }
+            else
+            {
+                m_Animator.SetBool(jumpAnimationID, false);
+
+            }
+
+
         }
        
+
+
+
+
 
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
