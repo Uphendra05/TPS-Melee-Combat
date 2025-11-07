@@ -28,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
     private int jumpAnimationID;
     private int groundedAnimationID;
     private int freefallAnimationID;
+    private int jumpLandBlendTreeID;
 
 
     [Header("Camera Settings")]
@@ -57,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
         _camera = Camera.main;
 
         blendTreeID = Animator.StringToHash("Velocity");
+        jumpLandBlendTreeID = Animator.StringToHash("Speed");
         dodgeAnimationID = Animator.StringToHash("IsDodge");
         jumpAnimationID = Animator.StringToHash("IsJump");
         freefallAnimationID = Animator.StringToHash("IsFreefall");
@@ -110,6 +112,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveDir = new Vector3(x, 0.0f, z).normalized;
 
         m_Animator.SetFloat(blendTreeID, blendTreeVelocity, 0.1f, Time.deltaTime);
+        m_Animator.SetFloat(jumpLandBlendTreeID, blendTreeVelocity, 0.1f, Time.deltaTime);
 
         Debug.Log(moveDir.magnitude);
 
