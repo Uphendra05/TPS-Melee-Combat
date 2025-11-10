@@ -7,7 +7,11 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement Settings")]
     public float moveSpeed = 6f;
     public float gravity = -9.81f;
+    private float gravityMultiplier = 2.0f;
     public float jumpHeight = 1.5f;
+    public int maxJumps = 2;
+    private int jumpsRemaining;
+
 
     [Header("Ground Check")]
     public Transform groundCheck;
@@ -74,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
         if(UnityEngine.Input.GetKeyDown(KeyCode.LeftAlt)) 
         {
             m_Animator.SetTrigger(dodgeAnimationID);
+            m_Animator.SetBool(jumpAnimationID, false);
 
         }
 
@@ -141,32 +146,48 @@ public class PlayerMovement : MonoBehaviour
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask, QueryTriggerInteraction.Ignore);
         m_Animator.SetBool(groundedAnimationID, isGrounded);
 
-        if (isGrounded && velocity.y < 0)
+        // Reset jumps when grounded
+        if (isGrounded)
         {
+            jumpsRemaining = maxJumps;
 
-            velocity.y = -2f;
+            if (velocity.y < 0)
+                velocity.y = -2f;
+        }
 
-            if (UnityEngine.Input.GetButtonDown("Jump") && isGrounded)
+        // JUMP INPUT (works in air now too)
+        if (UnityEngine.Input.GetButtonDown("Jump") && jumpsRemaining > 0)
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+
+            if (jumpsRemaining == 1)
             {
-                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+                velocity.y *= 1.6f; // Try 1.2 to 1.5 — tweak this value
+            }
+
+            jumpsRemaining--;
+
+            if (jumpsRemaining == maxJumps - 1)
+            {
+                // First jump
                 m_Animator.SetBool(jumpAnimationID, true);
                 m_Animator.SetBool(groundedAnimationID, false);
-
             }
             else
             {
-                m_Animator.SetBool(jumpAnimationID, false);
-
+                // Second jump
+                Debug.Log("Second Jump");
+                m_Animator.SetTrigger("DoubleJump");
             }
-
-
         }
-       
+        else
+        {
+            // If not jumping, make sure normal jump animation resets
+            if (isGrounded)
+                m_Animator.SetBool(jumpAnimationID, false);
+        }
 
-
-
-
-
+        // Apply gravity and move
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
