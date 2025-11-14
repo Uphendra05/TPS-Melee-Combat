@@ -35,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
     private float blendTreeVelocity;
     private int blendTreeID;
     private int dodgeAnimationID;
+    private int backstepAnimationID;
     private int jumpAnimationID;
     private int groundedAnimationID;
     private int freefallAnimationID;
@@ -70,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
         blendTreeID = Animator.StringToHash("Velocity");
         jumpLandBlendTreeID = Animator.StringToHash("Speed");
         dodgeAnimationID = Animator.StringToHash("IsDodge");
+        backstepAnimationID = Animator.StringToHash("Backstep");
         jumpAnimationID = Animator.StringToHash("IsJump");
         freefallAnimationID = Animator.StringToHash("IsFreefall");
         groundedAnimationID = Animator.StringToHash("IsGrounded");
@@ -232,6 +234,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 Vector3 dashDirection = -transform.forward;
                 endPos = transform.position + dashDirection * dodgeSpeed;
+                m_Animator.SetTrigger(backstepAnimationID);
+
             }
 
             StartCoroutine(DoDash(endPos));
@@ -250,8 +254,6 @@ public class PlayerMovement : MonoBehaviour
         while (elapsedTime < dodgeDuration)
         {
             float t = elapsedTime / dodgeDuration;
-
-            float yOffset = Mathf.Sin(t * Mathf.PI) * 0.5f;
 
             Vector3 targetPos = Vector3.Lerp(startPos, endPos, t);
 

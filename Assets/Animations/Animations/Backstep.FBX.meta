@@ -1,12 +1,5 @@
 fileFormatVersion: 2
-guid: 2ad661312e8eaaa4283735b0077b0a58
-AssetOrigin:
-  serializedVersion: 1
-  productId: 182928
-  packageName: Platform Animation
-  packageVersion: 2.5
-  assetPath: Assets/Shinabro/Platform_Animation/Animation/00_Base/Stander@ChaseDown_End.FBX
-  uploadId: 568326
+guid: f8411e51dcf2afa428ad909e5b60c113
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable:
@@ -52,7 +45,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
