@@ -1,3 +1,4 @@
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.Windows;
@@ -21,6 +22,11 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 velocity;
     public bool isGrounded;
 
+    [Header("Evade Settings")]
+    [SerializeField] private float dodgeSpeed = 10f;
+    [SerializeField] private float dodgeDuration = 0.25f;
+
+    public bool isDodging = false;
 
 
     [Header("Animation Properties")]
@@ -73,14 +79,9 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
 
-       
-       
-        if(UnityEngine.Input.GetKeyDown(KeyCode.LeftAlt)) 
-        {
-            m_Animator.SetTrigger(dodgeAnimationID);
-            m_Animator.SetBool(jumpAnimationID, false);
 
-        }
+
+        HandleEvade();
 
         if (UnityEngine.Input.GetKey(KeyCode.LeftShift))
         {
@@ -162,7 +163,7 @@ public class PlayerMovement : MonoBehaviour
 
             if (jumpsRemaining == 1)
             {
-                velocity.y *= 1.6f; // Try 1.2 to 1.5 � tweak this value
+                velocity.y *= 1.6f; // Try 1.2 to 1.5 — tweak this value
             }
 
             jumpsRemaining--;
@@ -206,6 +207,69 @@ public class PlayerMovement : MonoBehaviour
         cameraFollowTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
     }
 
+    private void HandleEvade()
+    {
+        if (UnityEngine.Input.GetKeyDown(KeyCode.LeftAlt) && !isDodging)
+        {
+            float x = UnityEngine.Input.GetAxisRaw("Horizontal");
+            float z = UnityEngine.Input.GetAxisRaw("Vertical");
+
+            Vector3 moveDir = new Vector3(x, 0.0f, z).normalized;
+            Vector3 endPos;
+
+            if (moveDir.magnitude > 0.1f)
+            {
+                Vector3 dashDirection = transform.forward;
+
+                endPos = transform.position + dashDirection * dodgeSpeed;
+
+                m_Animator.SetTrigger(dodgeAnimationID);
+                m_Animator.SetBool(jumpAnimationID, false);
+            }
+            else
+            {
+                Vector3 dashDirection = -transform.forward;
+
+                 endPos = transform.position + dashDirection * dodgeSpeed;
+            }
+
+            StartCoroutine(DoDash(endPos));
+
+        }
+    }
+
+    private IEnumerator DoDash(Vector3 endPos)
+    {
+        float elapsedTime = 0f;
+
+        Vector3 startPos = transform.position;
+        Vector3 dashVector = endPos - startPos;
+
+        
+        while (elapsedTime < dodgeDuration)
+        {
+            float t = elapsedTime / dodgeDuration;
+
+            float yOffset = Mathf.Sin(t * Mathf.PI) * 0.5f;
+
+            Vector3 targetPos = Vector3.Lerp(startPos, endPos, t);
+
+            Vector3 delta = targetPos - controller.transform.position;
+
+            controller.Move(delta);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        Vector3 finalDelta = endPos - controller.transform.position;
+        controller.Move(finalDelta);
+
+        yield return new WaitForSeconds(1.4f);
+    }
+
+
+
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
     {
@@ -213,4 +277,6 @@ public class PlayerMovement : MonoBehaviour
         if (lfAngle > 360f) lfAngle -= 360f;
         return Mathf.Clamp(lfAngle, lfMin, lfMax);
     }
+
+
 }

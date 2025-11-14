@@ -2015,6 +2015,23 @@ MonoBehaviour:
   CameraRadius: 0.2
   DampingIntoCollision: 0
   DampingFromCollision: 2
+--- !u!114 &708156604
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708156596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: a3dacaec0287d7444b4bd276816e1666, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 1
+  m_FrequencyGain: 1
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &735700039
 GameObject:
   m_ObjectHideFlags: 0
@@ -4035,6 +4052,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2070925442191277755, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 708156601}
+    - targetCorrespondingSourceObject: {fileID: 2070925442191277755, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 708156604}
   m_SourcePrefab: {fileID: 100100000, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
 --- !u!1 &1263257528
 GameObject:
@@ -8688,12 +8708,16 @@ MonoBehaviour:
   moveSpeed: 2
   gravity: -9.81
   jumpHeight: 6
+  maxJumps: 2
   groundCheck: {fileID: 1814450057}
   groundDistance: 0.4
   groundMask:
     serializedVersion: 2
     m_Bits: 64
   isGrounded: 0
+  dodgeSpeed: 7
+  dodgeDuration: 0.25
+  isDodging: 0
   mouseSens: 150
   cameraFollowTarget: {fileID: 96589292}
   CameraAngleOverride: 0
