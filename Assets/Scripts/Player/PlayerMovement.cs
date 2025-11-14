@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Evade Settings")]
     [SerializeField] private float dodgeSpeed = 10f;
     [SerializeField] private float dodgeDuration = 0.25f;
-
+    [SerializeField] private float dashCoolDown = 1.25f;
     public bool isDodging = false;
 
 
@@ -211,6 +211,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (UnityEngine.Input.GetKeyDown(KeyCode.LeftAlt) && !isDodging)
         {
+            isDodging = true;
+
             float x = UnityEngine.Input.GetAxisRaw("Horizontal");
             float z = UnityEngine.Input.GetAxisRaw("Vertical");
 
@@ -229,8 +231,7 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 Vector3 dashDirection = -transform.forward;
-
-                 endPos = transform.position + dashDirection * dodgeSpeed;
+                endPos = transform.position + dashDirection * dodgeSpeed;
             }
 
             StartCoroutine(DoDash(endPos));
@@ -265,7 +266,8 @@ public class PlayerMovement : MonoBehaviour
         Vector3 finalDelta = endPos - controller.transform.position;
         controller.Move(finalDelta);
 
-        yield return new WaitForSeconds(1.4f);
+        yield return new WaitForSeconds(dashCoolDown);
+        isDodging = false;
     }
 
 
