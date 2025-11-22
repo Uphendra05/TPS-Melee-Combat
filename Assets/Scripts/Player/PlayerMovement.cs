@@ -59,10 +59,11 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+       
+
         m_Animator = GetComponent<Animator>();
         cameraFollowTarget.transform.rotation = Quaternion.Euler(0.0f,0.0f, 0.0f);
         controller = GetComponent<CharacterController>();
