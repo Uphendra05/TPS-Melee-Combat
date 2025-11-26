@@ -33,31 +33,33 @@ public class InputHandler : MonoBehaviour
 
     private void OnSprint(InputAction.CallbackContext context)
     {
+        Debug.Log("Sprint");
         isSprintPressed = context.ReadValueAsButton();
-        Debug.Log("Sprint Pressed " + context.phase);
     }
 
     private void OnDash(InputAction.CallbackContext context)
     {
         isDashPressed = context.ReadValueAsButton();
-        Debug.Log("Dash Pressed " + context.phase);
+        Debug.Log("Dash");
 
     }
 
     private void OnMove(InputAction.CallbackContext context)
     {
+        Debug.Log("Move");
 
-        Debug.Log(context);
         move = context.ReadValue<Vector2>();    
     }
 
     private void OnJump(InputAction.CallbackContext context)
     {
+        Debug.Log("Jump");
+
         isJumpPressed = context.ReadValueAsButton();
-        Debug.Log("Jump Pressed " + context.phase);
 
     }
 
+ 
 
 
 
