@@ -18,7 +18,8 @@ public class PlayerIdleState : BasePlayerStates
 
     public override void UpdateState()
     {
-
+        CheckSwitchStates();
+        Debug.Log("IDLE STATE");
     }
 
     public override void FixedUpdateState()
@@ -34,7 +35,20 @@ public class PlayerIdleState : BasePlayerStates
 
     public override void CheckSwitchStates()
     {
-       
+        if (_ctx.playerInput.move.sqrMagnitude > 0.1f && _ctx.playerInput.isSprintPressed)
+        {
+            SwitchState(_stateFactory.Run());
 
+        }
+        else if (_ctx.playerInput.move.sqrMagnitude > 0.1f)
+        {
+            SwitchState(_stateFactory.Jog());
+
+        }
+
+    }
+
+    public override void InitializeSubState()
+    {
     }
 }

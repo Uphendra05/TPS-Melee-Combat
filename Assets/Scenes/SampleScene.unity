@@ -8765,7 +8765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: c9b274785bd9ae44ca169204d4797cb5, type: 3}
-  m_NotificationBehavior: 0
+  m_NotificationBehavior: 3
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -8781,6 +8781,18 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 2d1289e6-538f-4a0d-be5e-e1325d7e56ac
     m_ActionName: 'Player/Jump[/Keyboard/space]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fbca2233-28c8-4d41-84ce-e3d435ff2a9f
+    m_ActionName: 'Player/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e5e64a28-7203-4ecf-bed8-890a907eb59d
+    m_ActionName: 'Player/Dash[/Keyboard/leftAlt]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8edabdd0-2f10-4972-b76e-e26dc4d2ade6
+    m_ActionName: 'Player/Sprint[/Keyboard/leftShift]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -8811,7 +8823,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ePlayerStates: 0
-  playerInput: {fileID: 5224551938715071815}
+  moveSpeed: 6
+  gravity: -9.81
+  jumpHeight: 6
+  maxJumps: 2
+  jumpsRemaining: 2
+  groundCheck: {fileID: 1814450057}
+  groundDistance: 0.4
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
+  controller: {fileID: 5224551938715071813}
+  velocity: {x: 0, y: 0, z: 0}
+  dodgeSpeed: 10
+  dodgeDuration: 0.25
+  dashCoolDown: 1.25
+  isDodging: 0
+  m_Animator: {fileID: 5224551938715071811}
+  _targetRotation: 0
+  blendTreeVelocity: 0
+  blendTreeID: 0
+  dodgeAnimationID: 0
+  backstepAnimationID: 0
+  jumpAnimationID: 0
+  groundedAnimationID: 0
+  freefallAnimationID: 0
+  jumpLandBlendTreeID: 0
+  mouseSens: 150
+  cameraFollowTarget: {fileID: 96589292}
+  _cinemachineTargetYaw: 0
+  _cinemachineTargetPitch: 0
+  CameraAngleOverride: 0
+  TopClamp: 70
+  BottomClamp: -30
+  _camera: {fileID: 0}
+  _rotationVelocity: 0
 --- !u!4 &5321251030409455392
 Transform:
   m_ObjectHideFlags: 0

@@ -21,6 +21,7 @@ public class InputHandler : MonoBehaviour
         inputActions.Player.Jump.canceled += OnJump;
 
         inputActions.Player.Movement.performed += OnMove;
+        inputActions.Player.Movement.canceled += OnMove;
 
 
         inputActions.Player.Dash.started += OnDash;

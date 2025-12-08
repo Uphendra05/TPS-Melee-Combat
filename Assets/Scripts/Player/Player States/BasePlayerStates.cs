@@ -4,8 +4,9 @@ public abstract class BasePlayerStates
 {
     protected PlayerStateMachine _ctx;
     protected PlayerStateFactory _stateFactory;
-
-
+    protected BasePlayerStates _currentSubState;
+    protected BasePlayerStates _currentSuperState;
+    protected bool isRootState = false;
     public BasePlayerStates(PlayerStateMachine currentContext, PlayerStateFactory stateFactory)
     {
         _ctx = currentContext;
@@ -28,8 +29,35 @@ public abstract class BasePlayerStates
 
         newState.InitState();
 
-        _ctx.CurrentState = newState;
+        if (isRootState)
+        {
+            _ctx.CurrentState = newState;
+
+        }
+        else if (_currentSuperState != null)
+        {
+            _currentSuperState.SetSubstate(newState);
+        }
 
     }
 
+    public abstract void InitializeSubState();
+
+    public void UpdateAllStates() 
+    {
+        UpdateState();
+
+        _currentSubState?.UpdateState();
+
+
+    }
+    protected void SetSuperState(BasePlayerStates superState) 
+    { 
+        _currentSuperState = superState;
+    }
+    protected void SetSubstate(BasePlayerStates subState) 
+    {   
+        _currentSubState = subState;
+        subState.SetSuperState(this);
+    }
 }

@@ -1,10 +1,14 @@
 ﻿using System.Collections;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.Windows;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public InputHandler playerInput { get; private set; }
+
+
     [Header("Movement Settings")]
     public float moveSpeed = 6f;
     public float gravity = -9.81f;
@@ -62,7 +66,8 @@ public class PlayerMovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-       
+
+        playerInput = GetComponent<InputHandler>();
 
         m_Animator = GetComponent<Animator>();
         cameraFollowTarget.transform.rotation = Quaternion.Euler(0.0f,0.0f, 0.0f);
@@ -115,10 +120,9 @@ public class PlayerMovement : MonoBehaviour
     {
         
 
-        float x = UnityEngine.Input.GetAxisRaw("Horizontal");
-        float z = UnityEngine.Input.GetAxisRaw("Vertical");
+        
 
-        Vector3 moveDir = new Vector3(x, 0.0f, z).normalized;
+        Vector3 moveDir = new Vector3(playerInput.move.x, 0.0f, playerInput.move.y).normalized;
 
         m_Animator.SetFloat(blendTreeID, blendTreeVelocity, 0.1f, Time.deltaTime);
         m_Animator.SetFloat(jumpLandBlendTreeID, blendTreeVelocity, 0.1f, Time.deltaTime);
@@ -147,51 +151,10 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask, QueryTriggerInteraction.Ignore);
-        m_Animator.SetBool(groundedAnimationID, isGrounded);
 
-        // Reset jumps when grounded
-        if (isGrounded)
-        {
-            jumpsRemaining = maxJumps;
+        HandleJump();
 
-            if (velocity.y < 0)
-                velocity.y = -2f;
-        }
 
-        // JUMP INPUT (works in air now too)
-        if (UnityEngine.Input.GetButtonDown("Jump") && jumpsRemaining > 0)
-        {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-
-            if (jumpsRemaining == 1)
-            {
-                velocity.y *= 1.6f; // Try 1.2 to 1.5 — tweak this value
-            }
-
-            jumpsRemaining--;
-
-            if (jumpsRemaining == maxJumps - 1)
-            {
-                // First jump
-                m_Animator.SetBool(jumpAnimationID, true);
-                m_Animator.SetBool(groundedAnimationID, false);
-            }
-            else
-            {
-                // Second jump
-                Debug.Log("Second Jump");
-                m_Animator.SetTrigger("DoubleJump");
-            }
-        }
-        else
-        {
-            // If not jumping, make sure normal jump animation resets
-            if (isGrounded)
-                m_Animator.SetBool(jumpAnimationID, false);
-        }
-
-        // Apply gravity and move
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
@@ -273,7 +236,54 @@ public class PlayerMovement : MonoBehaviour
         isDodging = false;
     }
 
+    private void HandleJump()
+    {
+        Debug.Log("Inside Jump");
 
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask, QueryTriggerInteraction.Ignore);
+        m_Animator.SetBool(groundedAnimationID, isGrounded);
+
+        // Reset jumps when grounded
+        if (isGrounded)
+        {
+            jumpsRemaining = maxJumps;
+
+            if (velocity.y < 0)
+                velocity.y = -2f;
+        }
+
+        // JUMP INPUT (works in air now too)
+        if (playerInput.isJumpPressed && jumpsRemaining > 0)
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+
+            if (jumpsRemaining == 1)
+            {
+                velocity.y *= 1.6f; // Try 1.2 to 1.5 — tweak this value
+            }
+
+            jumpsRemaining--;
+
+            if (jumpsRemaining == maxJumps - 1)
+            {
+                // First jump
+                m_Animator.SetBool(jumpAnimationID, true);
+                m_Animator.SetBool(groundedAnimationID, false);
+            }
+            else
+            {
+                // Second jump
+                Debug.Log("Second Jump");
+                m_Animator.SetTrigger("DoubleJump");
+            }
+        }
+        else
+        {
+            // If not jumping, make sure normal jump animation resets
+            if (isGrounded)
+                m_Animator.SetBool(jumpAnimationID, false);
+        }
+    }
 
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
