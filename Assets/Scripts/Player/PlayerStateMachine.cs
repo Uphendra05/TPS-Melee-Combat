@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class PlayerStateMachine : MonoBehaviour
 {
@@ -129,6 +130,69 @@ public class PlayerStateMachine : MonoBehaviour
         if (lfAngle < -360f) lfAngle += 360f;
         if (lfAngle > 360f) lfAngle -= 360f;
         return Mathf.Clamp(lfAngle, lfMin, lfMax);
+    }
+
+    public void HandleEvade()
+    {
+        if (!isDodging)
+        {
+            isDodging = true;
+
+            float x = UnityEngine.Input.GetAxisRaw("Horizontal");
+            float z = UnityEngine.Input.GetAxisRaw("Vertical");
+
+            Vector3 moveDir = new Vector3(x, 0.0f, z).normalized;
+            Vector3 endPos;
+
+            if (moveDir.magnitude > 0.1f)
+            {
+                Vector3 dashDirection = transform.forward;
+
+                endPos = transform.position + dashDirection * dodgeSpeed;
+
+                m_Animator.SetTrigger(dodgeAnimationID);
+                m_Animator.SetBool(jumpAnimationID, false);
+            }
+            else
+            {
+                Vector3 dashDirection = -transform.forward;
+                endPos = transform.position + dashDirection * dodgeSpeed;
+                m_Animator.SetTrigger(backstepAnimationID);
+
+            }
+
+            StartCoroutine(DoDash(endPos));
+
+        }
+    }
+
+    public IEnumerator DoDash(Vector3 endPos)
+    {
+        float elapsedTime = 0f;
+
+        Vector3 startPos = transform.position;
+        Vector3 dashVector = endPos - startPos;
+
+
+        while (elapsedTime < dodgeDuration)
+        {
+            float t = elapsedTime / dodgeDuration;
+
+            Vector3 targetPos = Vector3.Lerp(startPos, endPos, t);
+
+            Vector3 delta = targetPos - controller.transform.position;
+
+            controller.Move(delta);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        Vector3 finalDelta = endPos - controller.transform.position;
+        controller.Move(finalDelta);
+
+        yield return new WaitForSeconds(dashCoolDown);
+        isDodging = false;
     }
 
 }
