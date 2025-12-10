@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerGroundedState : BasePlayerStates
 {
@@ -29,6 +30,24 @@ public class PlayerGroundedState : BasePlayerStates
     public override void UpdateState()
     {
         CheckSwitchStates();
+
+        if (_ctx.playerInput.move.sqrMagnitude > 0 && _ctx.playerInput.isSprintPressed)
+        {
+
+            _ctx.blendTreeVelocity = 1.0f;
+        }
+        else if (_ctx.playerInput.move.sqrMagnitude > 0.1f)
+        {
+            _ctx.blendTreeVelocity = 0.5f;
+        }
+        else
+        {
+            _ctx.blendTreeVelocity = 0.0f;
+
+        }
+
+        _ctx.m_Animator.SetFloat(_ctx.blendTreeID, _ctx.blendTreeVelocity, 0.1f, Time.deltaTime);
+        _ctx.m_Animator.SetFloat(_ctx.jumpLandBlendTreeID, _ctx.blendTreeVelocity, 0.1f, Time.deltaTime);
     }
     public override void CheckSwitchStates()
     {

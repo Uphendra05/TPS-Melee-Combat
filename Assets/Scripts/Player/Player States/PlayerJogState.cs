@@ -14,6 +14,7 @@ public class PlayerJogState : BasePlayerStates
     public override void InitState()
     {
         _ctx.ePlayerStates = PlayerStates.Jog;
+        _ctx.moveSpeed = 2f;
         Debug.Log("Jogging time");
     }
 
@@ -58,14 +59,12 @@ public class PlayerJogState : BasePlayerStates
     {
         Vector3 moveDir = new Vector3(_ctx.playerInput.move.x, 0.0f, _ctx.playerInput.move.y).normalized;
 
-        _ctx.m_Animator.SetFloat(_ctx.blendTreeID, _ctx.blendTreeVelocity, 0.1f, Time.deltaTime);
-        _ctx.m_Animator.SetFloat(_ctx.jumpLandBlendTreeID, _ctx.blendTreeVelocity, 0.1f, Time.deltaTime);
 
 
-        if (moveDir.magnitude > 0.1f)
+        if (moveDir.sqrMagnitude > 0.1f)
         {
 
-            _ctx.blendTreeVelocity = 0.5f;
+
             _ctx._targetRotation = Mathf.Atan2(moveDir.x, moveDir.z) * Mathf.Rad2Deg +
                              _ctx._camera.transform.eulerAngles.y;
 
@@ -75,13 +74,15 @@ public class PlayerJogState : BasePlayerStates
 
             Vector3 targetDirection = Quaternion.Euler(0.0f, _ctx._targetRotation, 0.0f) * Vector3.forward;
 
-            _ctx.controller.Move(targetDirection.normalized * (_ctx.moveSpeed * Time.deltaTime));
+            _ctx.horizontalVelocity = targetDirection.normalized * _ctx.moveSpeed;
 
         }
         else
         {
-            _ctx.blendTreeVelocity = 0;
-
+            _ctx.horizontalVelocity = Vector3.zero;
         }
+      
+
+       
     }
 }

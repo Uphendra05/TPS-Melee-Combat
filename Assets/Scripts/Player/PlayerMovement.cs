@@ -110,7 +110,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void LateUpdate()
     {
-        CameraMovement();
+       // CameraMovement();
 
     }
 

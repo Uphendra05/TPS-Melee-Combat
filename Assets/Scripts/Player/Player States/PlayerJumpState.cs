@@ -21,7 +21,7 @@ public class PlayerJumpState : BasePlayerStates
     {
         CheckSwitchStates();
         HandleJump();
-
+        _ctx.verticalVelocity += _ctx.gravity * Time.deltaTime;
     }
 
 
@@ -63,7 +63,7 @@ public class PlayerJumpState : BasePlayerStates
             {
                 Debug.Log("Inside Jump");
 
-                _ctx.velocity.y = Mathf.Sqrt(_ctx.jumpHeight * -2f * _ctx.gravity );
+                _ctx.verticalVelocity = Mathf.Sqrt(_ctx.jumpHeight * -2f * _ctx.gravity );
 
                 _ctx.jumpsRemaining--;
 

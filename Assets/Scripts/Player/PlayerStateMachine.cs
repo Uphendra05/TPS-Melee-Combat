@@ -12,6 +12,9 @@ public class PlayerStateMachine : MonoBehaviour
     public BasePlayerStates CurrentState { get { return _currentState; } set { _currentState = value; } }
 
 
+    public Vector3 horizontalVelocity; // XZ movement
+    public float verticalVelocity;     // Y movement
+
     [Header("Movement Settings")]
     public float moveSpeed = 6f;
     public float gravity = -9.81f;
@@ -86,14 +89,47 @@ public class PlayerStateMachine : MonoBehaviour
 
     void Update()
     {
+
+        
+
         CurrentState.UpdateAllStates();
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
-        Debug.Log("SQR Mag : " + playerInput.move.sqrMagnitude);
+
+
+        Vector3 finalVelocity = horizontalVelocity;
+        finalVelocity.y = verticalVelocity;
+        controller.Move(finalVelocity * Time.deltaTime);
+
+
+    }
+
+    private void LateUpdate()
+    {
+        CameraMovement();
 
     }
 
 
+    private void CameraMovement()
+    {
+        float mouseX = UnityEngine.Input.GetAxis("Mouse X") * mouseSens * Time.deltaTime;
+        float mouseY = UnityEngine.Input.GetAxis("Mouse Y") * mouseSens * Time.deltaTime;
+
+        _cinemachineTargetYaw += mouseX;
+        _cinemachineTargetPitch += -mouseY;
+
+        _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
+        _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
+
+        cameraFollowTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
+    }
+
+
+    private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
+    {
+        if (lfAngle < -360f) lfAngle += 360f;
+        if (lfAngle > 360f) lfAngle -= 360f;
+        return Mathf.Clamp(lfAngle, lfMin, lfMax);
+    }
 
 }
 

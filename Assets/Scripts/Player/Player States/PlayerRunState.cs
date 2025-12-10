@@ -35,11 +35,19 @@ public class PlayerRunState : BasePlayerStates
     public override void InitState()
     {
         _ctx.ePlayerStates = PlayerStates.Run;
+        _ctx.moveSpeed = 7f;
+      
     }
 
     public override void UpdateState()
     {
         CheckSwitchStates();
+
+
+
+        _ctx.blendTreeVelocity = 1.0f;
+
+
         Debug.Log("RUN STATE");
 
     }
