@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
+using UnityEngine.InputSystem.XR;
 
 public class PlayerStateMachine : MonoBehaviour
 {
@@ -138,10 +139,7 @@ public class PlayerStateMachine : MonoBehaviour
         {
             isDodging = true;
 
-            float x = UnityEngine.Input.GetAxisRaw("Horizontal");
-            float z = UnityEngine.Input.GetAxisRaw("Vertical");
-
-            Vector3 moveDir = new Vector3(x, 0.0f, z).normalized;
+            Vector3 moveDir = new Vector3(playerInput.move.x, 0, playerInput.move.y).normalized;
             Vector3 endPos;
 
             if (moveDir.magnitude > 0.1f)
@@ -191,10 +189,17 @@ public class PlayerStateMachine : MonoBehaviour
         Vector3 finalDelta = endPos - controller.transform.position;
         controller.Move(finalDelta);
 
+        horizontalVelocity = Vector3.zero;
         yield return new WaitForSeconds(dashCoolDown);
         isDodging = false;
     }
 
+
+    public void OnDodgeFinished()
+    {
+        Debug.Log("Inside Dodge finised");
+        CurrentState?.HandleAnimationEvent("DodgeFinished");
+    }
 }
 
 
@@ -205,5 +210,6 @@ public enum PlayerStates
     Idle = 1,
     Jog = 2,
     Run = 3,
-    Jump = 4
+    Jump = 4,
+    Dodge = 5
 }

@@ -5,10 +5,12 @@ public class PlayerDodgeState : BasePlayerStates
 {
     public PlayerDodgeState(PlayerStateMachine currentContext, PlayerStateFactory stateFactory) : base(currentContext, stateFactory)
     {
+        isRootState = true;
     }
 
     public override void CheckSwitchStates()
     {
+
     }
 
     public override void ExitState()
@@ -25,13 +27,28 @@ public class PlayerDodgeState : BasePlayerStates
 
     public override void InitState()
     {
+        _ctx.ePlayerStates = PlayerStates.Dodge;
+
+        if (_ctx.playerInput.isDashPressed)
+        {
+            _ctx.HandleEvade();
+        }
     }
 
     public override void UpdateState()
     {
-
+        Debug.Log("DODGE STATE");
     }
 
 
-   
+    
+
+    public override void HandleAnimationEvent(string eventName)
+    {
+        if (eventName == "DodgeFinished")
+        {
+            SwitchState(_stateFactory.Grounded());
+        }
+    }
+
 }

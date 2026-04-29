@@ -56,10 +56,13 @@ public class PlayerGroundedState : BasePlayerStates
             SwitchState(_stateFactory.Jump());
 
         }
+
         if (_ctx.playerInput.isDashPressed)
         {
-            _ctx.HandleEvade();
+            SwitchState(_stateFactory.Dodge());
+
         }
+
     }
 
     public override void InitializeSubState()

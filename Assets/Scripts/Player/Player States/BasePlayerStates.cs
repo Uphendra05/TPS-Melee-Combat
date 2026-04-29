@@ -60,4 +60,6 @@ public abstract class BasePlayerStates
         _currentSubState = subState;
         subState.SetSuperState(this);
     }
+
+    public virtual void HandleAnimationEvent(string eventName) { }
 }
