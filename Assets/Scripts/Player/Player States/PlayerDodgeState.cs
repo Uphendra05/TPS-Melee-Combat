@@ -8,22 +8,6 @@ public class PlayerDodgeState : BasePlayerStates
         isRootState = true;
     }
 
-    public override void CheckSwitchStates()
-    {
-
-    }
-
-    public override void ExitState()
-    {
-    }
-
-    public override void FixedUpdateState()
-    {
-    }
-
-    public override void InitializeSubState()
-    {
-    }
 
     public override void InitState()
     {
@@ -37,11 +21,24 @@ public class PlayerDodgeState : BasePlayerStates
 
     public override void UpdateState()
     {
+
         Debug.Log("DODGE STATE");
+    }
+    public override void FixedUpdateState()
+    {
+
+    }
+
+    public override void CheckSwitchStates()
+    {
+
+    }
+
+    public override void ExitState()
+    {
     }
 
 
-    
 
     public override void HandleAnimationEvent(string eventName)
     {

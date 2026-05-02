@@ -52,20 +52,17 @@ public class PlayerJogState : BasePlayerStates
 
     }
 
-    public override void InitializeSubState()
-    {
-    }
+    
     void HandleMove()
     {
-        Vector3 moveDir = new Vector3(_ctx.playerInput.move.x, 0.0f, _ctx.playerInput.move.y).normalized;
+        
 
 
-
-        if (moveDir.sqrMagnitude > 0.1f)
+        if (_ctx.moveDir.sqrMagnitude > 0.1f)
         {
 
 
-            _ctx._targetRotation = Mathf.Atan2(moveDir.x, moveDir.z) * Mathf.Rad2Deg +
+            _ctx._targetRotation = Mathf.Atan2(_ctx.moveDir.x, _ctx.moveDir.z) * Mathf.Rad2Deg +
                              _ctx._camera.transform.eulerAngles.y;
 
             float rotation = Mathf.SmoothDampAngle(_ctx.transform.eulerAngles.y, _ctx._targetRotation, ref _ctx._rotationVelocity, 0.1f);

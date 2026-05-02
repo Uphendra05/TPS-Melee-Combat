@@ -8,6 +8,7 @@ public class InputHandler : MonoBehaviour
     public bool isJumpPressed { get; private set; } 
     public bool isDashPressed { get; private set; } 
     public bool isSprintPressed { get; private set; }
+    public bool isAttackPressed { get; private set; }
 
 
     private PlayerInputSystem inputActions;
@@ -26,6 +27,9 @@ public class InputHandler : MonoBehaviour
 
         inputActions.Player.Dash.started += OnDash;
         inputActions.Player.Dash.canceled += OnDash;
+
+        inputActions.Player.Attack.started += OnAttack;
+        inputActions.Player.Attack.canceled += OnAttack;
 
         inputActions.Player.Sprint.started += OnSprint;
         inputActions.Player.Sprint.canceled += OnSprint;
@@ -60,7 +64,14 @@ public class InputHandler : MonoBehaviour
 
     }
 
- 
+    private void OnAttack(InputAction.CallbackContext context)
+    {
+        isAttackPressed = context.ReadValueAsButton();
+        Debug.Log("Attack");
+
+    }
+
+
 
 
 

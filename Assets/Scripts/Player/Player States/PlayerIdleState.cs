@@ -48,7 +48,5 @@ public class PlayerIdleState : BasePlayerStates
 
     }
 
-    public override void InitializeSubState()
-    {
-    }
+   
 }

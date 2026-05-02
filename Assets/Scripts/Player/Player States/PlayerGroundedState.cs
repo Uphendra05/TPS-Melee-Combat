@@ -63,6 +63,12 @@ public class PlayerGroundedState : BasePlayerStates
 
         }
 
+        if (_ctx.playerInput.isAttackPressed)
+        {
+            SwitchState(_stateFactory.Attack());
+
+        }
+
     }
 
     public override void InitializeSubState()

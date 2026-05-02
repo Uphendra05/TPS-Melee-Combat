@@ -15,6 +15,7 @@ public class PlayerStateFactory
         states.Add("Jump", new PlayerJumpState(currentContext, this));
         states.Add("Run", new PlayerRunState(currentContext, this));
         states.Add("Dodge", new PlayerDodgeState(currentContext, this));
+        states.Add("Attack", new PlayerAttackState(currentContext, this));
 
 
     }
@@ -47,5 +48,10 @@ public class PlayerStateFactory
     public BasePlayerStates Dodge()
     {
         return states["Dodge"];
+    }
+
+    public BasePlayerStates Attack()
+    {
+        return states["Attack"];
     }
 }

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 using UnityEngine.InputSystem.XR;
+using Unity.VisualScripting;
 
 public class PlayerStateMachine : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class PlayerStateMachine : MonoBehaviour
 
     public InputHandler playerInput { get; private set; }
     public BasePlayerStates CurrentState { get { return _currentState; } set { _currentState = value; } }
+    public Vector3 moveDir { get; private set; }
+
+    public PlayerCombatSystem playerCombatSystem;
 
 
     public Vector3 horizontalVelocity; // XZ movement
@@ -73,6 +77,9 @@ public class PlayerStateMachine : MonoBehaviour
         _camera = Camera.main;
         _stateFactory = new PlayerStateFactory(this);
         CurrentState = _stateFactory.Grounded();
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void Start()
@@ -92,14 +99,19 @@ public class PlayerStateMachine : MonoBehaviour
     void Update()
     {
 
-        
 
+        moveDir = new Vector3(playerInput.move.x, 0.0f, playerInput.move.y).normalized;
         CurrentState.UpdateAllStates();
 
+      
+         Vector3 finalVelocity = horizontalVelocity;
+         finalVelocity.y = verticalVelocity;
+         controller.Move(finalVelocity * Time.deltaTime);
+       
 
-        Vector3 finalVelocity = horizontalVelocity;
-        finalVelocity.y = verticalVelocity;
-        controller.Move(finalVelocity * Time.deltaTime);
+        
+
+       
 
 
     }
@@ -195,10 +207,15 @@ public class PlayerStateMachine : MonoBehaviour
     }
 
 
-    public void OnDodgeFinished()
+    public void OnDodgeFinished() // Animation Event
     {
         Debug.Log("Inside Dodge finised");
         CurrentState?.HandleAnimationEvent("DodgeFinished");
+    }
+
+    public void OnAttackFinished() // Animation Event
+    {
+        CurrentState?.HandleAnimationEvent("AttackEnd");
     }
 }
 
@@ -211,5 +228,6 @@ public enum PlayerStates
     Jog = 2,
     Run = 3,
     Jump = 4,
-    Dodge = 5
+    Dodge = 5,
+    Attack = 6
 }

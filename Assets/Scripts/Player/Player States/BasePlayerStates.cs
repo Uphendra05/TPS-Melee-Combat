@@ -41,7 +41,7 @@ public abstract class BasePlayerStates
 
     }
 
-    public abstract void InitializeSubState();
+    public virtual void InitializeSubState() { }
 
     public void UpdateAllStates() 
     {

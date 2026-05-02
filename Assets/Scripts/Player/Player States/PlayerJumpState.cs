@@ -85,8 +85,5 @@ public class PlayerJumpState : BasePlayerStates
        
     }
 
-    public override void InitializeSubState()
-    {
-        throw new System.NotImplementedException();
-    }
+   
 }
