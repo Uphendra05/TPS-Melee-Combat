@@ -16,7 +16,6 @@ public class PlayerCameraController : MonoBehaviour
     public float _rotationVelocity;
 
     public bool camLockedToTarget;
-    [SerializeField] CinemachineVirtualCamera lockCam;
 
     private void Awake()
     {
@@ -36,6 +35,8 @@ public class PlayerCameraController : MonoBehaviour
     void Update()
     {
         
+
+
     }
 
     private void LateUpdate()
@@ -43,18 +44,12 @@ public class PlayerCameraController : MonoBehaviour
         if (!camLockedToTarget)
         {
             CameraMovement();
-
         }
         else
         {
-            //SyncTPSCameraToLockCamera();
-
+            ResetCameraRotationAfterUnlockingTarget();
         }
-
-
-
-
-
+      
     }
 
 
@@ -69,7 +64,8 @@ public class PlayerCameraController : MonoBehaviour
         _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
         _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
 
-        //cameraFollowTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
+        cameraFollowTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
+
     }
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
@@ -79,11 +75,22 @@ public class PlayerCameraController : MonoBehaviour
         return Mathf.Clamp(lfAngle, lfMin, lfMax);
     }
 
-    void SyncTPSCameraToLockCamera()
+    private void ResetCameraRotationAfterUnlockingTarget()
     {
-        Vector3 angles = lockCam.transform.eulerAngles;
+        Vector3 forward = Camera.main.transform.forward;
+        forward.y = 0f;
 
-        cameraFollowTarget.transform.rotation =
-            Quaternion.Euler(angles.x, angles.y, 0);
+        if (forward.sqrMagnitude < 0.001f)
+            return;
+
+        Quaternion rot = Quaternion.LookRotation(forward);
+
+        _cinemachineTargetYaw = rot.eulerAngles.y;
+
+        float pitch = rot.eulerAngles.x;
+        if (pitch > 180) pitch -= 360;
+
+        _cinemachineTargetPitch = pitch;
     }
+
 }

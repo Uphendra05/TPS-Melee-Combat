@@ -95,6 +95,8 @@ public class EnemyLockOn : MonoBehaviour
         lockOnCanvas.gameObject.SetActive(false);
 
         cinemachineAnimator.Play("FollowCam");
+
+
     }
 
     Transform ScanNearBy()
