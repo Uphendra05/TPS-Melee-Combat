@@ -153,8 +153,30 @@ public class PlayerController_Platform : MonoBehaviour
                     timer = 0;
                     break;
 
-                
+
                 case 2:
+
+                    if (timer <= term)
+                    {
+                        anim.SetTrigger("Attack2.5");
+
+                        clickCount++;
+
+                    }
+
+
+                    else
+                    {
+                        anim.SetTrigger("Attack1");
+
+                        clickCount = 1;
+                    }
+
+                    timer = 0;
+                    break;
+
+
+                case 3:
                     
                     if (timer <= term)
                     {                        

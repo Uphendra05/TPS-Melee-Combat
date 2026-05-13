@@ -31,14 +31,18 @@ public class PlayerGroundedState : BasePlayerStates
     {
         CheckSwitchStates();
 
-        if (_ctx.playerInput.move.sqrMagnitude > 0 && _ctx.playerInput.isSprintPressed)
+        if (_ctx.playerInput.move.sqrMagnitude > 0.2f && _ctx.playerInput.isSprintPressed)
         {
 
             _ctx.blendTreeVelocity = 1.0f;
+            _ctx.moveSpeed = 7f;
+
+
         }
         else if (_ctx.playerInput.move.sqrMagnitude > 0.1f)
         {
             _ctx.blendTreeVelocity = 0.5f;
+             _ctx.moveSpeed = 2f;
         }
         else
         {

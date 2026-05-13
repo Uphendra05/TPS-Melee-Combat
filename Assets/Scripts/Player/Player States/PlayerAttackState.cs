@@ -19,7 +19,9 @@ public class PlayerAttackState : BasePlayerStates
 
     public override void UpdateState()
     {
-        _ctx.horizontalVelocity = Vector3.zero;
+       _ctx.horizontalVelocity = Vector3.zero;
+       _ctx.controller.Move(_ctx.m_Animator.deltaPosition);
+
 
     }
 
@@ -46,6 +48,8 @@ public class PlayerAttackState : BasePlayerStates
             SwitchState(_stateFactory.Grounded());
         }
     }
+
+   
 
 
 }

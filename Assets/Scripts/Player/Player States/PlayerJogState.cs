@@ -14,7 +14,6 @@ public class PlayerJogState : BasePlayerStates
     public override void InitState()
     {
         _ctx.ePlayerStates = PlayerStates.Jog;
-        _ctx.moveSpeed = 2f;
         Debug.Log("Jogging time");
     }
 
@@ -63,9 +62,9 @@ public class PlayerJogState : BasePlayerStates
 
 
             _ctx._targetRotation = Mathf.Atan2(_ctx.moveDir.x, _ctx.moveDir.z) * Mathf.Rad2Deg +
-                             _ctx._camera.transform.eulerAngles.y;
+                             _ctx.cameraController._camera.transform.eulerAngles.y;
 
-            float rotation = Mathf.SmoothDampAngle(_ctx.transform.eulerAngles.y, _ctx._targetRotation, ref _ctx._rotationVelocity, 0.1f);
+            float rotation = Mathf.SmoothDampAngle(_ctx.transform.eulerAngles.y, _ctx._targetRotation, ref _ctx.cameraController._rotationVelocity, 0.1f);
 
             _ctx.transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
 

@@ -441,7 +441,6 @@ GameObject:
   - component: {fileID: 8218369179007266111}
   - component: {fileID: 3675889884610010237}
   - component: {fileID: 5452691173346886436}
-  - component: {fileID: 2415716961231924223}
   - component: {fileID: 7921289986408700732}
   - component: {fileID: 712969261688367508}
   - component: {fileID: 566465813169447003}
@@ -521,37 +520,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e3171194a91fe143bb4b43ebf28b4b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2415716961231924223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1230385377389796462}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4f793e2ddaf5ac4db06a81b6c126b39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2
-  gravity: -9.81
-  jumpHeight: 6
-  maxJumps: 2
-  groundCheck: {fileID: 668918075091436327}
-  groundDistance: 0.4
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 64
-  isGrounded: 0
-  dodgeSpeed: 3
-  dodgeDuration: 0.25
-  dashCoolDown: 0.75
-  isDodging: 0
-  mouseSens: 150
-  cameraFollowTarget: {fileID: 1929191812917586496}
-  CameraAngleOverride: 0
-  TopClamp: 70
-  BottomClamp: -30
 --- !u!143 &7921289986408700732
 CharacterController:
   m_ObjectHideFlags: 0
@@ -636,6 +604,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ePlayerStates: 0
+  playerCombatSystem: {fileID: 0}
   horizontalVelocity: {x: 0, y: 0, z: 0}
   verticalVelocity: 0
   moveSpeed: 6
@@ -664,15 +633,6 @@ MonoBehaviour:
   groundedAnimationID: 0
   freefallAnimationID: 0
   jumpLandBlendTreeID: 0
-  mouseSens: 150
-  cameraFollowTarget: {fileID: 1929191812917586496}
-  _cinemachineTargetYaw: 0
-  _cinemachineTargetPitch: 0
-  CameraAngleOverride: 0
-  TopClamp: 70
-  BottomClamp: -30
-  _camera: {fileID: 0}
-  _rotationVelocity: 0
 --- !u!1 &1278908482532836456
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,89 @@
+using Cinemachine;
+using UnityEngine;
+
+public class PlayerCameraController : MonoBehaviour
+{
+    [Header("Camera Settings")]
+    public float mouseSens;
+    public Transform cameraFollowTarget;
+    public float _cinemachineTargetYaw;
+    public float _cinemachineTargetPitch;
+    public float CameraAngleOverride;
+    public float TopClamp = 70.0f;
+    public float BottomClamp = -30.0f;
+    public const float _threshold = 0.01f;
+    public Camera _camera;
+    public float _rotationVelocity;
+
+    public bool camLockedToTarget;
+    [SerializeField] CinemachineVirtualCamera lockCam;
+
+    private void Awake()
+    {
+        cameraFollowTarget.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
+        _camera = Camera.main;
+
+
+    }
+
+
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    private void LateUpdate()
+    {
+        if (!camLockedToTarget)
+        {
+            CameraMovement();
+
+        }
+        else
+        {
+            //SyncTPSCameraToLockCamera();
+
+        }
+
+
+
+
+
+    }
+
+
+    private void CameraMovement()
+    {
+        float mouseX = UnityEngine.Input.GetAxis("Mouse X") * mouseSens * Time.deltaTime;
+        float mouseY = UnityEngine.Input.GetAxis("Mouse Y") * mouseSens * Time.deltaTime;
+
+        _cinemachineTargetYaw += mouseX;
+        _cinemachineTargetPitch += -mouseY;
+
+        _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
+        _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
+
+        //cameraFollowTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
+    }
+
+    private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
+    {
+        if (lfAngle < -360f) lfAngle += 360f;
+        if (lfAngle > 360f) lfAngle -= 360f;
+        return Mathf.Clamp(lfAngle, lfMin, lfMax);
+    }
+
+    void SyncTPSCameraToLockCamera()
+    {
+        Vector3 angles = lockCam.transform.eulerAngles;
+
+        cameraFollowTarget.transform.rotation =
+            Quaternion.Euler(angles.x, angles.y, 0);
+    }
+}

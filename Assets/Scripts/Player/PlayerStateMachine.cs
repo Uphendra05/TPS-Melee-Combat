@@ -16,6 +16,7 @@ public class PlayerStateMachine : MonoBehaviour
     public Vector3 moveDir { get; private set; }
 
     public PlayerCombatSystem playerCombatSystem;
+    public PlayerCameraController cameraController { get; private set; }
 
 
     public Vector3 horizontalVelocity; // XZ movement
@@ -57,27 +58,14 @@ public class PlayerStateMachine : MonoBehaviour
     public int jumpLandBlendTreeID;
 
 
-    [Header("Camera Settings")]
-    public float mouseSens;
-    public Transform cameraFollowTarget;
-    public float _cinemachineTargetYaw;
-    public float _cinemachineTargetPitch;
-    public float CameraAngleOverride;
-    public float TopClamp = 70.0f;
-    public float BottomClamp = -30.0f;
-    public const float _threshold = 0.01f;
-    public Camera _camera;
-    public float _rotationVelocity;
-
     private void Awake()
     {
         playerInput = GetComponent<InputHandler>();
-        cameraFollowTarget.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
         controller = GetComponent<CharacterController>();
-        _camera = Camera.main;
+        cameraController = GetComponent<PlayerCameraController>();
+
         _stateFactory = new PlayerStateFactory(this);
         CurrentState = _stateFactory.Grounded();
-
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -116,34 +104,8 @@ public class PlayerStateMachine : MonoBehaviour
 
     }
 
-    private void LateUpdate()
-    {
-        CameraMovement();
+   
 
-    }
-
-
-    private void CameraMovement()
-    {
-        float mouseX = UnityEngine.Input.GetAxis("Mouse X") * mouseSens * Time.deltaTime;
-        float mouseY = UnityEngine.Input.GetAxis("Mouse Y") * mouseSens * Time.deltaTime;
-
-        _cinemachineTargetYaw += mouseX;
-        _cinemachineTargetPitch += -mouseY;
-
-        _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
-        _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
-
-        cameraFollowTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
-    }
-
-
-    private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
-    {
-        if (lfAngle < -360f) lfAngle += 360f;
-        if (lfAngle > 360f) lfAngle -= 360f;
-        return Mathf.Clamp(lfAngle, lfMin, lfMax);
-    }
 
     public void HandleEvade()
     {
@@ -217,6 +179,8 @@ public class PlayerStateMachine : MonoBehaviour
     {
         CurrentState?.HandleAnimationEvent("AttackEnd");
     }
+
+    
 }
 
 
