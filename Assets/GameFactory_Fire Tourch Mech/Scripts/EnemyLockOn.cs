@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class EnemyLockOn : MonoBehaviour
 {
-    Transform currentTarget;
-    Animator anim;
+    
 
     [SerializeField] LayerMask targetLayers;
     [SerializeField] Transform enemyTargetLocator;
@@ -19,24 +18,18 @@ public class EnemyLockOn : MonoBehaviour
     [SerializeField] float lookAtSmoothing = 5f;
     [SerializeField] float maxNoticeAngle = 60f;
     [SerializeField] float crossHairScale = 0.1f;
-
-    public Transform cam;
-    public bool enemyLocked;
-
-    float currentYOffset;
-
     [SerializeField] Transform lockOnCanvas;
 
-    PlayerCameraController playerCameraController;
+    private Transform cam;
+    private bool enemyLocked;
+    private float currentYOffset;
+    private PlayerCameraController playerCameraController;
+    private Transform currentTarget;
 
     void Start()
     {
-        anim = GetComponent<Animator>();
-        playerCameraController = GetComponent<PlayerCameraController>();    
-
+        playerCameraController = GetComponent<PlayerCameraController>(); 
         cam = Camera.main.transform;
-
-
         lockOnCanvas.gameObject.SetActive(false);
     }
 
@@ -80,20 +73,15 @@ public class EnemyLockOn : MonoBehaviour
     void FoundTarget()
     {
         enemyLocked = true;
-
         lockOnCanvas.gameObject.SetActive(true);
-
         cinemachineAnimator.Play("TargetCam");
     }
 
     void ResetTarget()
     {
         currentTarget = null;
-
         enemyLocked = false;
-
         lockOnCanvas.gameObject.SetActive(false);
-
         cinemachineAnimator.Play("FollowCam");
 
 
@@ -101,30 +89,21 @@ public class EnemyLockOn : MonoBehaviour
 
     Transform ScanNearBy()
     {
-        Collider[] nearbyTargets =
-            Physics.OverlapSphere(
-                transform.position,
-                noticeZone,
-                targetLayers);
-
+        Collider[] nearbyTargets = Physics.OverlapSphere( transform.position, noticeZone, targetLayers);
         Transform closestTarget = null;
-
         float closestAngle = maxNoticeAngle;
 
         foreach (Collider target in nearbyTargets)
         {
-            Vector3 dir =
-                target.transform.position - cam.position;
+            Vector3 dir =  target.transform.position - cam.position;
 
             dir.y = 0;
 
-            float angle =
-                Vector3.Angle(cam.forward, dir);
+            float angle = Vector3.Angle(cam.forward, dir);
 
             if (angle < closestAngle)
             {
-                Vector3 targetPos =
-                    target.transform.position + Vector3.up * 1.5f;
+                Vector3 targetPos = target.transform.position + Vector3.up * 1.5f;
 
                 if (Blocked(targetPos))
                     continue;
@@ -137,13 +116,11 @@ public class EnemyLockOn : MonoBehaviour
         if (closestTarget == null)
             return null;
 
-        CapsuleCollider capsule =
-            closestTarget.GetComponent<CapsuleCollider>();
+        CapsuleCollider capsule = closestTarget.GetComponent<CapsuleCollider>();
 
         if (capsule != null)
         {
-            float height =
-                capsule.height * closestTarget.localScale.y;
+            float height = capsule.height * closestTarget.localScale.y;
 
             currentYOffset = height * 0.75f;
         }
@@ -152,9 +129,7 @@ public class EnemyLockOn : MonoBehaviour
             currentYOffset = 1.5f;
         }
 
-        if (zeroVertLook &&
-            currentYOffset > 1.6f &&
-            currentYOffset < 4.8f)
+        if (zeroVertLook && currentYOffset > 1.6f && currentYOffset < 4.8f)
         {
             currentYOffset = 1.6f;
         }
@@ -164,8 +139,7 @@ public class EnemyLockOn : MonoBehaviour
 
     bool Blocked(Vector3 targetPos)
     {
-        Vector3 origin =
-            transform.position + Vector3.up * 1.5f;
+        Vector3 origin = transform.position + Vector3.up * 1.5f;
 
         if (Physics.Linecast(origin, targetPos, out RaycastHit hit))
         {
@@ -181,55 +155,30 @@ public class EnemyLockOn : MonoBehaviour
         if (currentTarget == null)
             return false;
 
-        float distance =
-            Vector3.Distance(
-                transform.position,
-                currentTarget.position);
-
+        float distance = Vector3.Distance(transform.position,currentTarget.position);
         return distance <= noticeZone;
     }
 
     void LookAtTarget()
     {
-        Vector3 targetPos =
-            currentTarget.position +
-            Vector3.up * currentYOffset;
-
+        Vector3 targetPos = currentTarget.position + Vector3.up * currentYOffset;
         lockOnCanvas.position = targetPos;
-
-        float scale =
-            Vector3.Distance(cam.position, targetPos)
-            * crossHairScale;
-
-        lockOnCanvas.localScale =
-            Vector3.one * scale;
-
+        float scale = Vector3.Distance(cam.position, targetPos)  * crossHairScale;
+        lockOnCanvas.localScale = Vector3.one * scale;
         enemyTargetLocator.position = targetPos;
-
-        Vector3 dir =
-            currentTarget.position - transform.position;
-
+        Vector3 dir = currentTarget.position - transform.position;
         dir.y = 0;
 
         if (dir.sqrMagnitude > 0.001f)
         {
-            Quaternion rot =
-                Quaternion.LookRotation(dir);
-
-            transform.rotation =
-                Quaternion.Slerp(
-                    transform.rotation,
-                    rot,
-                    Time.deltaTime * lookAtSmoothing);
+            //Quaternion rot = Quaternion.LookRotation(dir);
+           // transform.rotation = Quaternion.Slerp(transform.rotation,rot,Time.deltaTime * lookAtSmoothing);
         }
     }
 
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-
-        Gizmos.DrawWireSphere(
-            transform.position,
-            noticeZone);
+        Gizmos.DrawWireSphere(transform.position,noticeZone);
     }
 }

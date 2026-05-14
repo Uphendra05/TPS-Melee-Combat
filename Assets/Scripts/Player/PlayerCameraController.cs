@@ -14,7 +14,6 @@ public class PlayerCameraController : MonoBehaviour
     public const float _threshold = 0.01f;
     public Camera _camera;
     public float _rotationVelocity;
-
     public bool camLockedToTarget;
 
     private void Awake()
@@ -61,20 +60,13 @@ public class PlayerCameraController : MonoBehaviour
         _cinemachineTargetYaw += mouseX;
         _cinemachineTargetPitch += -mouseY;
 
-        _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
+        _cinemachineTargetYaw =   ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
         _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
 
         cameraFollowTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
 
     }
-
-    private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
-    {
-        if (lfAngle < -360f) lfAngle += 360f;
-        if (lfAngle > 360f) lfAngle -= 360f;
-        return Mathf.Clamp(lfAngle, lfMin, lfMax);
-    }
-
+     
     private void ResetCameraRotationAfterUnlockingTarget()
     {
         Vector3 forward = Camera.main.transform.forward;
@@ -88,9 +80,19 @@ public class PlayerCameraController : MonoBehaviour
         _cinemachineTargetYaw = rot.eulerAngles.y;
 
         float pitch = rot.eulerAngles.x;
+
         if (pitch > 180) pitch -= 360;
 
         _cinemachineTargetPitch = pitch;
+    }
+
+
+
+    private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
+    {
+        if (lfAngle < -360f) lfAngle += 360f;
+        if (lfAngle > 360f) lfAngle -= 360f;
+        return Mathf.Clamp(lfAngle, lfMin, lfMax);
     }
 
 }
