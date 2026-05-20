@@ -13,7 +13,7 @@ public class PlayerAttackState : BasePlayerStates
 
         if (_ctx.playerInput.isAttackPressed)
         {
-            _ctx.playerCombatSystem.SwordAttack();
+            _ctx.playerCombatSystem.Attack();
         }
     }
 

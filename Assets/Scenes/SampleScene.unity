@@ -2735,6 +2735,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1c0a75f8f99ffc4ebfa219be7ff7ed1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombatSystem
+  weaponCombos:
+  - {fileID: 11400000, guid: 9bd3b6a684173e346a9f87c81abf2ead, type: 2}
+  - {fileID: 11400000, guid: 309bec54c3a97a54abad024fe59215b1, type: 2}
+  - {fileID: 11400000, guid: ddd7a5d5f5ebe7341b2de81fb6e32822, type: 2}
+  - {fileID: 11400000, guid: a9b2c07d8688cee4da6f0395daca6135, type: 2}
 --- !u!114 &763810633
 MonoBehaviour:
   m_ObjectHideFlags: 0
