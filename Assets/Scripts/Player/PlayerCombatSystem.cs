@@ -5,18 +5,15 @@ using UnityEngine.Timeline;
 
 public class PlayerCombatSystem : MonoBehaviour
 {
-    [Header("Combos")]
+    [Section("Combos")]
     public List<WeaponSO> weaponCombos;
 
-    [Header("Settings")]
-    public float comboResetTime = 1f; // time before combo resets
-    public float minAttackWindow; // must be near end of animation
-
+    [Section("Settings")]
+    public float comboResetTime = 1f; 
+    public float minAttackWindow; 
     private Animator m_Animator;
     private int comboCounter;
-    private float lastClickTime;
-
-    
+    private float lastClickTime;    
     [HideInInspector] public bool attackFinished;
 
     private void Start()

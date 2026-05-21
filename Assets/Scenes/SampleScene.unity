@@ -2800,11 +2800,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7af0525b0e225b4daf561fcc3ef4f4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEditor
-  moveSpeed: 0
-  jumpForce: 0
-  damage: 0
-  attackRange: 0
-  canDash: 0
+  plyer: 0
+  sadasd: 0
+  sadasdddd: 0
+  vsv: 0
+  vv: 0
+  sddsf: 0
+  ggag: 0
+  dnhjjj: 0
+  etge: 0
+  dhjjjj: 0
+  xxx: 0
+  xvbbb: 0
+  xvvbbnn: 0
+  ffhhjjj: 0
+  uiioo: 0
+  lljkjn: 0
+  yioxv: 0
+  xvbnn: 0
+  etghcs: 0
+  bbnsdfsd: 0
+  asxndfnd: 0
+  ashasdegccv: 0
+  nbfnssb: 0
+  sdbsbrnb: 0
 --- !u!1 &785585927
 GameObject:
   m_ObjectHideFlags: 0

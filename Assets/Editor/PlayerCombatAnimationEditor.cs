@@ -2,7 +2,7 @@
 using UnityEditor;
 using System.Collections.Generic;
 
-[CustomEditor(typeof(PlayerEditor))]
+[CustomEditor(typeof(MonoBehaviour), true)]
 [CanEditMultipleObjects]
 public class PlayerDataEditor : Editor
 {
