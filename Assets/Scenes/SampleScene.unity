@@ -2788,6 +2788,23 @@ MonoBehaviour:
   _camera: {fileID: 0}
   _rotationVelocity: 0
   camLockedToTarget: 0
+--- !u!114 &763810648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763810617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7af0525b0e225b4daf561fcc3ef4f4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerEditor
+  moveSpeed: 0
+  jumpForce: 0
+  damage: 0
+  attackRange: 0
+  canDash: 0
 --- !u!1 &785585927
 GameObject:
   m_ObjectHideFlags: 0
@@ -7946,6 +7963,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1230385377389796462, guid: 8aaf6c96bc7f63c4ca94a0ad6840994b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 763810633}
+    - targetCorrespondingSourceObject: {fileID: 1230385377389796462, guid: 8aaf6c96bc7f63c4ca94a0ad6840994b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 763810648}
   m_SourcePrefab: {fileID: 100100000, guid: 8aaf6c96bc7f63c4ca94a0ad6840994b, type: 3}
 --- !u!4 &7928630328580701584
 Transform:

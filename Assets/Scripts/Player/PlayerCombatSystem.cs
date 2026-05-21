@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
+using UnityEngine.Timeline;
 
 public class PlayerCombatSystem : MonoBehaviour
 {
@@ -15,8 +16,8 @@ public class PlayerCombatSystem : MonoBehaviour
     private int comboCounter;
     private float lastClickTime;
 
-
-    public bool attackFinished;
+    
+    [HideInInspector] public bool attackFinished;
 
     private void Start()
     {
