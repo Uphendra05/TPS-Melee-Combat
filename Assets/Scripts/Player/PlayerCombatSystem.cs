@@ -4,59 +4,58 @@ using UnityEngine;
 
 public class PlayerCombatSystem : MonoBehaviour
 {
+    [Header("Combos")]
     public List<WeaponSO> weaponCombos;
-    float lastClickedTime;
-    float lastComboEnd;
-    int comboCounter;
+
+    [Header("Settings")]
+    public float comboResetTime = 1f; // time before combo resets
+    public float minAttackWindow; // must be near end of animation
+
     private Animator m_Animator;
+    private int comboCounter;
+    private float lastClickTime;
 
 
+    public bool attackFinished;
 
-    void Start()
+    private void Start()
     {
         m_Animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        ExitAttack();
+        ResetComboIfIdle();
     }
-
 
     public void Attack()
     {
-        if (Time.time - lastComboEnd > 0.5f && comboCounter <= weaponCombos.Count)
+        AnimatorStateInfo state = m_Animator.GetCurrentAnimatorStateInfo(0);
+
+        if (state.IsTag("LightAttack") && state.normalizedTime < minAttackWindow)
         {
-            CancelInvoke("EndCombo");
-
-            if(Time.time -lastClickedTime >= 0.2f)
-            {
-                m_Animator.runtimeAnimatorController = weaponCombos[comboCounter].attackAnimation;
-                m_Animator.Play("LightAttack");
-                comboCounter++;
-                lastClickedTime = Time.time;
-
-                if (comboCounter + 1 > weaponCombos.Count)
-                {
-                    comboCounter = 0;
-                }
-            }
+            return;
         }
+
+        
+        if (comboCounter >= weaponCombos.Count)
+        {
+            comboCounter = 0;
+        }
+
+        lastClickTime = Time.time;
+        m_Animator.runtimeAnimatorController = weaponCombos[comboCounter].attackAnimation;
+        m_Animator.Play("LightAttack", 0, 0f);
+        comboCounter++;
     }
 
-
-    private void ExitAttack()
+    private void ResetComboIfIdle()
     {
-        if(m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f && m_Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
+        if (Time.time - lastClickTime > comboResetTime)
         {
-            Invoke("EndCombo", 1);
+            comboCounter = 0;
+            attackFinished = true;
+            lastClickTime = 0;
         }
-    }   
-    
-    private void EndCombo()
-    {
-        comboCounter = 0;
-        lastComboEnd = Time.time;
     }
 }

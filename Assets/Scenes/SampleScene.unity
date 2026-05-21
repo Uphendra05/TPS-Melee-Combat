@@ -2740,6 +2740,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 309bec54c3a97a54abad024fe59215b1, type: 2}
   - {fileID: 11400000, guid: ddd7a5d5f5ebe7341b2de81fb6e32822, type: 2}
   - {fileID: 11400000, guid: a9b2c07d8688cee4da6f0395daca6135, type: 2}
+  comboResetTime: 1
+  minAttackWindow: 0.6
+  attackFinished: 0
 --- !u!114 &763810633
 MonoBehaviour:
   m_ObjectHideFlags: 0

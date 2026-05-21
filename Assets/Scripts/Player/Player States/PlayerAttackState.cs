@@ -11,15 +11,25 @@ public class PlayerAttackState : BasePlayerStates
     {
         _ctx.ePlayerStates = PlayerStates.Attack;
 
-        if (_ctx.playerInput.isAttackPressed)
-        {
-            _ctx.playerCombatSystem.Attack();
-        }
+        
     }
 
     public override void UpdateState()
     {
-       _ctx.horizontalVelocity = Vector3.zero;
+
+        if (_ctx.playerInput.isAttackPressed)
+        {
+            _ctx.playerCombatSystem.Attack();
+        }
+
+        if (_ctx.playerCombatSystem.attackFinished)
+        {
+            SwitchState(_stateFactory.Grounded());
+            _ctx.playerCombatSystem.attackFinished = false;
+        }
+
+
+        _ctx.horizontalVelocity = Vector3.zero;
        _ctx.controller.Move(_ctx.m_Animator.deltaPosition);
 
 
@@ -45,7 +55,7 @@ public class PlayerAttackState : BasePlayerStates
     {
         if (eventName == "AttackEnd")
         {
-            SwitchState(_stateFactory.Grounded());
+            //SwitchState(_stateFactory.Grounded());
         }
     }
 
