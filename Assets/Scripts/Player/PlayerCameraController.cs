@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerCameraController : MonoBehaviour
 {
-    [Header("Camera Settings")]
+    [Section("Camera Settings")]
     public float mouseSens;
     public Transform cameraFollowTarget;
     public float _cinemachineTargetYaw;

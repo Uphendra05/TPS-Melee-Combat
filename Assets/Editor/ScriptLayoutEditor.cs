@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 [CustomEditor(typeof(MonoBehaviour), true)]
 [CanEditMultipleObjects]
-public class PlayerDataEditor : Editor
+public class ScriptLayoutEditor : Editor
 {
     private Dictionary<string, List<SerializedProperty>> sections = new();
     private Dictionary<string, bool> sectionStates = new();
@@ -20,7 +20,6 @@ public class PlayerDataEditor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 
-    // ---------------- CORE MAGIC ----------------
     private void BuildSectionsWithInheritance()
     {
         sections.Clear();
@@ -65,7 +64,6 @@ public class PlayerDataEditor : Editor
         }
     }
 
-    // ---------------- TAB BAR ----------------
     private void DrawTabBar()
     {
         if (sections == null || sections.Count == 0)
@@ -122,7 +120,6 @@ public class PlayerDataEditor : Editor
 
     }
 
-    // ---------------- DRAW CONTENT ----------------
     private void DrawActiveSections()
     {
         foreach (var section in sections)
@@ -141,7 +138,6 @@ public class PlayerDataEditor : Editor
         }
     }
 
-    // ---------------- HELPERS ----------------
     private void SetOnlyActive(string key)
     {
         var keys = new List<string>(sectionStates.Keys);
@@ -167,8 +163,7 @@ public class PlayerDataEditor : Editor
         if (field == null)
             return "";
 
-        var attr = (SectionAttribute)System.Attribute.GetCustomAttribute(
-            field, typeof(SectionAttribute));
+        var attr = (SectionAttribute)System.Attribute.GetCustomAttribute(field, typeof(SectionAttribute));
 
         return attr != null ? attr.name : "";
     }

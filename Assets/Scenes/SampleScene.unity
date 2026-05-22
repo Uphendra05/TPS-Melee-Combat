@@ -2736,10 +2736,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombatSystem
   weaponCombos:
-  - {fileID: 11400000, guid: 9bd3b6a684173e346a9f87c81abf2ead, type: 2}
-  - {fileID: 11400000, guid: 309bec54c3a97a54abad024fe59215b1, type: 2}
-  - {fileID: 11400000, guid: ddd7a5d5f5ebe7341b2de81fb6e32822, type: 2}
-  - {fileID: 11400000, guid: a9b2c07d8688cee4da6f0395daca6135, type: 2}
+  - {fileID: 11400000, guid: c8bb9e2c73645054b92788900e684ceb, type: 2}
+  - {fileID: 11400000, guid: a5122508bd7d81c40927d9ed836e90e6, type: 2}
+  - {fileID: 11400000, guid: 9b91738a3da3fe344a67ee1e2d7e6069, type: 2}
   comboResetTime: 1
   minAttackWindow: 0.6
   attackFinished: 0
@@ -2755,17 +2754,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f6dc76b3fc4af4c90a21b48e969f25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyLockOn
+  cinemachineAnimator: {fileID: 714028514}
+  zeroVertLook: 0
+  noticeZone: 10
+  maxNoticeAngle: 60
+  crossHairScale: 2
+  lockOnCanvas: {fileID: 833752959}
   targetLayers:
     serializedVersion: 2
     m_Bits: 128
   enemyTargetLocator: {fileID: 1690994300}
-  cinemachineAnimator: {fileID: 714028514}
-  zeroVertLook: 0
-  noticeZone: 10
-  lookAtSmoothing: 2
-  maxNoticeAngle: 60
-  crossHairScale: 2
-  lockOnCanvas: {fileID: 833752959}
 --- !u!114 &763810641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2788,42 +2786,6 @@ MonoBehaviour:
   _camera: {fileID: 0}
   _rotationVelocity: 0
   camLockedToTarget: 0
---- !u!114 &763810648
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 763810617}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7af0525b0e225b4daf561fcc3ef4f4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerEditor
-  plyer: 0
-  sadasd: 0
-  sadasdddd: 0
-  vsv: 0
-  vv: 0
-  sddsf: 0
-  ggag: 0
-  dnhjjj: 0
-  etge: 0
-  dhjjjj: 0
-  xxx: 0
-  xvbbb: 0
-  xvvbbnn: 0
-  ffhhjjj: 0
-  uiioo: 0
-  lljkjn: 0
-  yioxv: 0
-  xvbnn: 0
-  etghcs: 0
-  bbnsdfsd: 0
-  asxndfnd: 0
-  ashasdegccv: 0
-  nbfnssb: 0
-  sdbsbrnb: 0
 --- !u!1 &785585927
 GameObject:
   m_ObjectHideFlags: 0
@@ -7921,6 +7883,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3675889884610010237, guid: 8aaf6c96bc7f63c4ca94a0ad6840994b, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6353368797368843132, guid: 8aaf6c96bc7f63c4ca94a0ad6840994b, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -7982,9 +7948,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1230385377389796462, guid: 8aaf6c96bc7f63c4ca94a0ad6840994b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 763810633}
-    - targetCorrespondingSourceObject: {fileID: 1230385377389796462, guid: 8aaf6c96bc7f63c4ca94a0ad6840994b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 763810648}
   m_SourcePrefab: {fileID: 100100000, guid: 8aaf6c96bc7f63c4ca94a0ad6840994b, type: 3}
 --- !u!4 &7928630328580701584
 Transform:

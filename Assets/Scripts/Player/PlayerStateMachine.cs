@@ -9,43 +9,41 @@ public class PlayerStateMachine : MonoBehaviour
 
     BasePlayerStates _currentState;
     PlayerStateFactory _stateFactory;
-    public PlayerStates ePlayerStates; // Visualize Which state the player is currently in
 
+    [Section("Player Settings")]
+    public PlayerStates ePlayerStates;
     public InputHandler playerInput { get; private set; }
     public BasePlayerStates CurrentState { get { return _currentState; } set { _currentState = value; } }
     public Vector3 moveDir { get; private set; }
-
-    public PlayerCombatSystem playerCombatSystem;
     public PlayerCameraController cameraController { get; private set; }
+    public PlayerCombatSystem playerCombatSystem;
+    public Vector3 horizontalVelocity;
+    public float verticalVelocity;     
 
-
-    public Vector3 horizontalVelocity; // XZ movement
-    public float verticalVelocity;     // Y movement
-
-    [Header("Movement Settings")]
+    [Section("Movement Settings")]
     public float moveSpeed = 6f;
     public float gravity = -9.81f;
-    private float gravityMultiplier = 2.0f;
+   // private float gravityMultiplier = 2.0f;
     public float jumpHeight = 1.5f;
     public int maxJumps = 2;
     public int jumpsRemaining;
 
 
-    [Header("Ground Check")]
+    [Section("Ground Check")]
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
     public CharacterController controller;
     public Vector3 velocity;
 
-    [Header("Evade Settings")]
+    [Section("Evade Settings")]
     [SerializeField] private float dodgeSpeed = 10f;
     [SerializeField] private float dodgeDuration = 0.25f;
     [SerializeField] private float dashCoolDown = 1.25f;
     public bool isDodging = false;
 
 
-    [Header("Animation Properties")]
+    [Section("Animation Properties")]
     public Animator m_Animator;
     public float _targetRotation = 0.0f;
     public float blendTreeVelocity;
@@ -56,6 +54,7 @@ public class PlayerStateMachine : MonoBehaviour
     public int groundedAnimationID;
     public int freefallAnimationID;
     public int jumpLandBlendTreeID;
+    [HideInInspector] public float refVelocity;
 
 
     private void Awake()

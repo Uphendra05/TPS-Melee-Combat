@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement Settings")]
     public float moveSpeed = 6f;
     public float gravity = -9.81f;
-    private float gravityMultiplier = 2.0f;
+  //  private float gravityMultiplier = 2.0f;
     public float jumpHeight = 1.5f;
     public int maxJumps = 2;
     private int jumpsRemaining;

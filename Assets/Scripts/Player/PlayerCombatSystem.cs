@@ -15,10 +15,17 @@ public class PlayerCombatSystem : MonoBehaviour
     private int comboCounter;
     private float lastClickTime;    
     [HideInInspector] public bool attackFinished;
+    private AnimatorOverrideController overrideController;
+
+
 
     private void Start()
     {
         m_Animator = GetComponent<Animator>();
+        overrideController = new AnimatorOverrideController( m_Animator.runtimeAnimatorController );
+        m_Animator.runtimeAnimatorController = overrideController;
+
+
     }
 
     private void Update()
@@ -42,7 +49,7 @@ public class PlayerCombatSystem : MonoBehaviour
         }
 
         lastClickTime = Time.time;
-        m_Animator.runtimeAnimatorController = weaponCombos[comboCounter].attackAnimation;
+        overrideController["DummyClip"] = weaponCombos[comboCounter].attackAnimation;
         m_Animator.Play("LightAttack", 0, 0f);
         comboCounter++;
     }

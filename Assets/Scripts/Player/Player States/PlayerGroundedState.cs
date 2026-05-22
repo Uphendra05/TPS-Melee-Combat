@@ -33,25 +33,27 @@ public class PlayerGroundedState : BasePlayerStates
 
         if (_ctx.playerInput.move.sqrMagnitude > 0.2f && _ctx.playerInput.isSprintPressed)
         {
-
-            _ctx.blendTreeVelocity = 1.0f;
+            _ctx.blendTreeVelocity = Mathf.SmoothDamp(_ctx.blendTreeVelocity, 1.0f, ref _ctx.refVelocity, 0.1f);
             _ctx.moveSpeed = 7f;
 
 
         }
         else if (_ctx.playerInput.move.sqrMagnitude > 0.1f)
         {
-            _ctx.blendTreeVelocity = 0.5f;
-             _ctx.moveSpeed = 2f;
+
+            
+            _ctx.blendTreeVelocity = Mathf.SmoothDamp(_ctx.blendTreeVelocity, 0.5f, ref _ctx.refVelocity, 0.1f);
+            _ctx.moveSpeed = 2f;
         }
         else
         {
-            _ctx.blendTreeVelocity = 0.0f;
+            
+            _ctx.blendTreeVelocity = Mathf.SmoothDamp(_ctx.blendTreeVelocity,0.0f, ref _ctx.refVelocity, 0.1f);
 
         }
 
-        _ctx.m_Animator.SetFloat(_ctx.blendTreeID, _ctx.blendTreeVelocity, 0.1f, Time.deltaTime);
-        _ctx.m_Animator.SetFloat(_ctx.jumpLandBlendTreeID, _ctx.blendTreeVelocity, 0.1f, Time.deltaTime);
+        _ctx.m_Animator.SetFloat(_ctx.blendTreeID, _ctx.blendTreeVelocity);
+        _ctx.m_Animator.SetFloat(_ctx.jumpLandBlendTreeID, _ctx.blendTreeVelocity);
     }
     public override void CheckSwitchStates()
     {

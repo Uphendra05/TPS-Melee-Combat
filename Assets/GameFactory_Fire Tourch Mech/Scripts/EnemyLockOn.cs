@@ -6,19 +6,21 @@ public class EnemyLockOn : MonoBehaviour
 {
     
 
-    [SerializeField] LayerMask targetLayers;
-    [SerializeField] Transform enemyTargetLocator;
+    
 
-    [Header("Camera")]
+    [Section("Camera")]
     [SerializeField] Animator cinemachineAnimator;
+    
 
-    [Header("Settings")]
+    [Section("Settings")]
     [SerializeField] bool zeroVertLook;
     [SerializeField] float noticeZone = 10f;
-    [SerializeField] float lookAtSmoothing = 5f;
+    //[SerializeField] float lookAtSmoothing = 5f;
     [SerializeField] float maxNoticeAngle = 60f;
     [SerializeField] float crossHairScale = 0.1f;
     [SerializeField] Transform lockOnCanvas;
+    [SerializeField] LayerMask targetLayers;
+    [SerializeField] Transform enemyTargetLocator;
 
     private Transform cam;
     private bool enemyLocked;
