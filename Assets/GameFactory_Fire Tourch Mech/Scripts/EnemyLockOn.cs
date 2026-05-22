@@ -173,8 +173,8 @@ public class EnemyLockOn : MonoBehaviour
 
         if (dir.sqrMagnitude > 0.001f)
         {
-            //Quaternion rot = Quaternion.LookRotation(dir);
-           // transform.rotation = Quaternion.Slerp(transform.rotation,rot,Time.deltaTime * lookAtSmoothing);
+           //Quaternion rot = Quaternion.LookRotation(dir);
+           //transform.rotation = Quaternion.Slerp(transform.rotation,rot,Time.deltaTime * lookAtSmoothing);
         }
     }
 

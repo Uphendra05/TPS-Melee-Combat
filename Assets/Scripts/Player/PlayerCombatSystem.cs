@@ -16,8 +16,14 @@ public class PlayerCombatSystem : MonoBehaviour
     private float lastClickTime;    
     [HideInInspector] public bool attackFinished;
     private AnimatorOverrideController overrideController;
+    public float animationSpeed;
 
+    [Section("Enemy Detection")]
+    public float detectZone = 1f;
+    public float attackTurnSpeed;
 
+    private Transform currentTarget;
+    private bool isAttacking;
 
     private void Start()
     {
@@ -42,7 +48,10 @@ public class PlayerCombatSystem : MonoBehaviour
             return;
         }
 
+        currentTarget = FindClosestEnemy();
+        isAttacking = true;
         
+
         if (comboCounter >= weaponCombos.Count)
         {
             comboCounter = 0;
@@ -50,6 +59,7 @@ public class PlayerCombatSystem : MonoBehaviour
 
         lastClickTime = Time.time;
         overrideController["DummyClip"] = weaponCombos[comboCounter].attackAnimation;
+        m_Animator.SetFloat("AttackSpeed",1.2f);
         m_Animator.Play("LightAttack", 0, 0f);
         comboCounter++;
     }
@@ -61,6 +71,61 @@ public class PlayerCombatSystem : MonoBehaviour
             comboCounter = 0;
             attackFinished = true;
             lastClickTime = 0;
+            isAttacking = false;
+            currentTarget = null;
+            m_Animator.applyRootMotion = true;
         }
     }
+
+    private Transform FindClosestEnemy()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, detectZone);
+
+        Transform closestEnemy = null;
+        float distance = Mathf.Infinity;
+
+        foreach (Collider collider in colliders)
+        {
+            if (!collider.CompareTag("Enemy"))
+                continue;
+
+            float dist = Vector3.Distance(transform.position, collider.transform.position);
+
+            if (dist < distance)
+            {
+                distance = dist;
+                closestEnemy = collider.transform;
+            }
+        }
+
+
+        return closestEnemy;
+    }
+
+    public void HandlePlayerRotation()
+    {
+        if (isAttacking && currentTarget != null)
+        {
+            Vector3 direction = currentTarget.position - transform.position;
+
+            direction.y = 0f;
+
+            if (direction != Vector3.zero)
+            {
+                m_Animator.applyRootMotion = false;
+                Quaternion targetRot = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp( transform.rotation, targetRot,attackTurnSpeed * Time.deltaTime);
+            }
+        }
+
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+       
+      Gizmos.color = Color.blueViolet;
+      Gizmos.DrawWireSphere(transform.position, detectZone);
+        
+    }
+
 }
