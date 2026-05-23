@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 using UnityEngine.Timeline;
 
 public class PlayerCombatSystem : MonoBehaviour
@@ -24,13 +25,14 @@ public class PlayerCombatSystem : MonoBehaviour
 
     private Transform currentTarget;
     private bool isAttacking;
+    private CharacterController controller;
 
     private void Start()
     {
         m_Animator = GetComponent<Animator>();
         overrideController = new AnimatorOverrideController( m_Animator.runtimeAnimatorController );
         m_Animator.runtimeAnimatorController = overrideController;
-
+        controller = GetComponent<CharacterController>();   
 
     }
 
@@ -42,15 +44,41 @@ public class PlayerCombatSystem : MonoBehaviour
     public void Attack()
     {
         AnimatorStateInfo state = m_Animator.GetCurrentAnimatorStateInfo(0);
+        currentTarget = FindClosestEnemy();
+        isAttacking = true;
+
+        if (currentTarget != null)
+        {
+            if (state.IsTag("LightAttack"))
+            {
+                if (state.normalizedTime > 0.1f &&
+                    state.normalizedTime < 0.35f)
+                {
+                    Debug.Log("Lunge Attack done");
+                    controller.Move(
+                        transform.forward *
+                        5f *
+                        Time.deltaTime
+                    );
+                }
+            }
+
+        }
 
         if (state.IsTag("LightAttack") && state.normalizedTime < minAttackWindow)
         {
             return;
         }
+       
 
-        currentTarget = FindClosestEnemy();
-        isAttacking = true;
-        
+
+
+      
+
+
+
+
+
 
         if (comboCounter >= weaponCombos.Count)
         {
