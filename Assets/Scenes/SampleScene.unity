@@ -198,7 +198,7 @@ MonoBehaviour:
   minAttackWindow: 0.6
   attackFinished: 0
   animationSpeed: 0
-  detectZone: 1.04
+  detectZone: 1
   attackTurnSpeed: 10
 --- !u!114 &24262884
 MonoBehaviour:

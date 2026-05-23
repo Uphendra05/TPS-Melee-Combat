@@ -17,6 +17,11 @@ public class PlayerAttackState : BasePlayerStates
     public override void UpdateState()
     {
 
+        if (_ctx.playerInput.isDashPressed) // Also do dodge to interrupt attack
+        {
+            _ctx.HandleEvade();
+        }
+
         if (_ctx.playerInput.isAttackPressed)
         {
             _ctx.playerCombatSystem.Attack();
@@ -32,7 +37,9 @@ public class PlayerAttackState : BasePlayerStates
 
 
        _ctx.horizontalVelocity = Vector3.zero;
-       //_ctx.controller.Move(_ctx.m_Animator.deltaPosition);
+        //_ctx.controller.Move(_ctx.m_Animator.deltaPosition);
+
+        
 
 
     }

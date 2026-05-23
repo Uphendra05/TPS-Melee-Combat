@@ -108,36 +108,61 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void HandleEvade()
     {
-        if (!isDodging)
+        if (isDodging)
+            return;
+
+        isDodging = true;
+
+        Vector3 moveDir =
+            new Vector3(playerInput.move.x, 0, playerInput.move.y);
+
+        Vector3 endPos;
+
+        // NO INPUT = BACKSTEP
+        if (moveDir.magnitude < 0.1f)
         {
-            isDodging = true;
+            Vector3 dashDirection = -transform.forward;
 
-            Vector3 moveDir = new Vector3(playerInput.move.x, 0, playerInput.move.y).normalized;
-            Vector3 endPos;
+            endPos =
+                transform.position +
+                dashDirection * dodgeSpeed;
 
-            if (moveDir.magnitude > 0.1f)
-            {
-                Vector3 dashDirection = transform.forward;
-
-                endPos = transform.position + dashDirection * dodgeSpeed;
-
-                m_Animator.SetTrigger(dodgeAnimationID);
-                m_Animator.SetBool(jumpAnimationID, false);
-            }
-            else
-            {
-                Vector3 dashDirection = -transform.forward;
-                endPos = transform.position + dashDirection * dodgeSpeed;
-                m_Animator.SetTrigger(backstepAnimationID);
-
-            }
-
-            StartCoroutine(DoDash(endPos));
-
+            m_Animator.SetTrigger(backstepAnimationID);
         }
+        else
+        {
+            // CAMERA RELATIVE DIRECTION
+            Vector3 camForward = cameraController._camera.transform.forward;
+            Vector3 camRight = cameraController._camera.transform.right;
+
+            camForward.y = 0;
+            camRight.y = 0;
+
+            camForward.Normalize();
+            camRight.Normalize();
+
+            Vector3 dashDirection =
+                camForward * moveDir.z +
+                camRight * moveDir.x;
+
+            dashDirection.Normalize();
+
+            // ROTATE PLAYER
+            transform.rotation =
+                Quaternion.LookRotation(dashDirection);
+
+            endPos =
+                transform.position +
+                dashDirection * dodgeSpeed;
+
+            m_Animator.SetTrigger(dodgeAnimationID);
+            m_Animator.SetBool(jumpAnimationID, false);
+        }
+
+        StartCoroutine(DoDash(endPos));
     }
 
-    public IEnumerator DoDash(Vector3 endPos)
+    private IEnumerator DoDash(Vector3 endPos)
     {
         float elapsedTime = 0f;
 
@@ -184,13 +209,3 @@ public class PlayerStateMachine : MonoBehaviour
 
 
 
-public enum PlayerStates
-{
-    Grounded = 0,
-    Idle = 1,
-    Jog = 2,
-    Run = 3,
-    Jump = 4,
-    Dodge = 5,
-    Attack = 6
-}

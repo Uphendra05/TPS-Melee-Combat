@@ -16,7 +16,16 @@ public enum WeaponType
     Bludgeon 
 };
 
-
+public enum PlayerStates
+{
+    Grounded = 0,
+    Idle = 1,
+    Jog = 2,
+    Run = 3,
+    Jump = 4,
+    Dodge = 5,
+    Attack = 6
+}
 
 
 

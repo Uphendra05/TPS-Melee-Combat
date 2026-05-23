@@ -22,6 +22,7 @@ public class PlayerCombatSystem : MonoBehaviour
     [Section("Enemy Detection")]
     public float detectZone = 1f;
     public float attackTurnSpeed;
+    //public float lungeDistance;
 
     private Transform currentTarget;
     private bool isAttacking;
@@ -47,37 +48,29 @@ public class PlayerCombatSystem : MonoBehaviour
         currentTarget = FindClosestEnemy();
         isAttacking = true;
 
-        if (currentTarget != null)
-        {
-            if (state.IsTag("LightAttack"))
-            {
-                if (state.normalizedTime > 0.1f &&
-                    state.normalizedTime < 0.35f)
-                {
-                    Debug.Log("Lunge Attack done");
-                    controller.Move(
-                        transform.forward *
-                        5f *
-                        Time.deltaTime
-                    );
-                }
-            }
+        //if (currentTarget != null)
+        //{
+        //    if (state.IsTag("LightAttack"))
+        //    {
+        //        if (state.normalizedTime > 0.1f &&
+        //            state.normalizedTime < 0.35f)
+        //        {
+        //            Debug.Log("Lunge Attack done");
+        //            controller.Move(
+        //                transform.forward *
+        //                lungeDistance *
+        //                Time.deltaTime
+        //            );
+        //        }
+        //    }
 
-        }
+        //}
 
         if (state.IsTag("LightAttack") && state.normalizedTime < minAttackWindow)
         {
             return;
         }
        
-
-
-
-      
-
-
-
-
 
 
         if (comboCounter >= weaponCombos.Count)
@@ -142,9 +135,15 @@ public class PlayerCombatSystem : MonoBehaviour
             {
                 m_Animator.applyRootMotion = false;
                 Quaternion targetRot = Quaternion.LookRotation(direction);
-                transform.rotation = Quaternion.Slerp( transform.rotation, targetRot,attackTurnSpeed * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, attackTurnSpeed * Time.deltaTime);
             }
         }
+        else if (currentTarget == null)
+        {
+            m_Animator.applyRootMotion = true;
+
+        }
+
 
     }
 
