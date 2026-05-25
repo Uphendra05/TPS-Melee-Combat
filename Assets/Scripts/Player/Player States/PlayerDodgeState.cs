@@ -13,16 +13,16 @@ public class PlayerDodgeState : BasePlayerStates
     {
         _ctx.ePlayerStates = PlayerStates.Dodge;
 
-        if (_ctx.playerInput.isDashPressed)
-        {
-            _ctx.HandleEvade();
-        }
+        
     }
 
     public override void UpdateState()
     {
 
-        Debug.Log("DODGE STATE");
+        if (_ctx.playerInput.isDashPressed)
+        {
+            _ctx.HandleEvade();
+        }
     }
     public override void FixedUpdateState()
     {

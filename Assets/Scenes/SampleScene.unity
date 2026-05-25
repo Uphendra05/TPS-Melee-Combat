@@ -230,18 +230,11 @@ MonoBehaviour:
   velocity: {x: 0, y: 0, z: 0}
   dodgeSpeed: 5
   dodgeDuration: 0.25
-  dashCoolDown: 0.5
+  dashCoolDown: 0.7
   isDodging: 0
   m_Animator: {fileID: 24262879}
   _targetRotation: 0
   blendTreeVelocity: 0
-  blendTreeID: 0
-  dodgeAnimationID: 0
-  backstepAnimationID: 0
-  jumpAnimationID: 0
-  groundedAnimationID: 0
-  freefallAnimationID: 0
-  jumpLandBlendTreeID: 0
   refVelocity: 0
 --- !u!114 &24262885
 MonoBehaviour:

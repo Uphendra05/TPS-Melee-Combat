@@ -22,8 +22,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     [Section("Movement Settings")]
     public float moveSpeed = 6f;
-    public float gravity = -9.81f;
-   // private float gravityMultiplier = 2.0f;
+    public float gravity = -9.81f;   
     public float jumpHeight = 1.5f;
     public int maxJumps = 2;
     public int jumpsRemaining;
@@ -47,13 +46,15 @@ public class PlayerStateMachine : MonoBehaviour
     public Animator m_Animator;
     public float _targetRotation = 0.0f;
     public float blendTreeVelocity;
-    public int blendTreeID;
-    public int dodgeAnimationID;
-    public int backstepAnimationID;
-    public int jumpAnimationID;
-    public int groundedAnimationID;
-    public int freefallAnimationID;
-    public int jumpLandBlendTreeID;
+
+    public int blendTreeID { get; private set; } 
+    public int dodgeAnimationID { get; private set; }
+    public int backstepAnimationID { get; private set; }
+    public int jumpAnimationID { get; private set; }
+    public int groundedAnimationID { get; private set; }
+    public int freefallAnimationID { get; private set; }
+    public int jumpLandBlendTreeID { get; private set; }
+
     [HideInInspector] public float refVelocity;
 
 

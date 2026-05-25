@@ -45,6 +45,10 @@ public class PlayerIdleState : BasePlayerStates
             SwitchState(_stateFactory.Jog());
 
         }
+        if (_ctx.playerInput.move.sqrMagnitude == 0)
+        {
+            SwitchState(_stateFactory.Idle());
+        }
 
     }
 

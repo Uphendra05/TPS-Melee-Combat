@@ -37,7 +37,7 @@ public class PlayerAttackState : BasePlayerStates
 
 
        _ctx.horizontalVelocity = Vector3.zero;
-        //_ctx.controller.Move(_ctx.m_Animator.deltaPosition);
+        _ctx.controller.Move(_ctx.m_Animator.deltaPosition);
 
         
 
@@ -51,6 +51,7 @@ public class PlayerAttackState : BasePlayerStates
 
     public override void ExitState()
     {
+        _ctx.blendTreeVelocity = 0.0f;
 
     }
 
