@@ -18,6 +18,8 @@ public class PlayerCombatSystem : MonoBehaviour
     [HideInInspector] public bool attackFinished;
     private AnimatorOverrideController overrideController;
     public float animationSpeed;
+    private AnimationEventPlayer eventPlayer;
+    public AnimationEventSO animationEventSO;
 
     [Section("Enemy Detection")]
     public float detectZone = 1f;
@@ -33,13 +35,18 @@ public class PlayerCombatSystem : MonoBehaviour
         m_Animator = GetComponent<Animator>();
         overrideController = new AnimatorOverrideController( m_Animator.runtimeAnimatorController );
         m_Animator.runtimeAnimatorController = overrideController;
-        controller = GetComponent<CharacterController>();   
+        controller = GetComponent<CharacterController>();
+        eventPlayer = GetComponent<AnimationEventPlayer>();
 
+
+        eventPlayer.Play(animationEventSO);
     }
 
     private void Update()
     {
         ResetComboIfIdle();
+        AnimatorStateInfo state = m_Animator.GetCurrentAnimatorStateInfo(0);
+        eventPlayer.Tick(state.normalizedTime % 1);
     }
 
     public void Attack()
@@ -47,6 +54,8 @@ public class PlayerCombatSystem : MonoBehaviour
         AnimatorStateInfo state = m_Animator.GetCurrentAnimatorStateInfo(0);
         currentTarget = FindClosestEnemy();
         isAttacking = true;
+
+        
 
         //if (currentTarget != null)
         //{

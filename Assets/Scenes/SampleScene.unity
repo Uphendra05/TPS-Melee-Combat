@@ -198,6 +198,7 @@ MonoBehaviour:
   minAttackWindow: 0.6
   attackFinished: 0
   animationSpeed: 0
+  animationEventSO: {fileID: 11400000, guid: 8693f6f2f2fa73a439c2537a929eaa36, type: 2}
   detectZone: 1
   attackTurnSpeed: 10
 --- !u!114 &24262884
@@ -319,6 +320,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e3171194a91fe143bb4b43ebf28b4b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &24262888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24262878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1398bcb36a4d35441a4865aa28410f4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimationEventPlayer
 --- !u!1 &47132298
 GameObject:
   m_ObjectHideFlags: 0
@@ -2917,6 +2930,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dbe4191aa8a702544aef194689f1c4d2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 24262881}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dbe4191aa8a702544aef194689f1c4d2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 24262888}
   m_SourcePrefab: {fileID: 100100000, guid: dbe4191aa8a702544aef194689f1c4d2, type: 3}
 --- !u!1 &763796949
 GameObject:
@@ -3055,6 +3071,7 @@ MonoBehaviour:
   minAttackWindow: 0.6
   attackFinished: 0
   animationSpeed: 0
+  animationEventSO: {fileID: 0}
   detectZone: 1.04
   attackTurnSpeed: 10
 --- !u!114 &763810633
