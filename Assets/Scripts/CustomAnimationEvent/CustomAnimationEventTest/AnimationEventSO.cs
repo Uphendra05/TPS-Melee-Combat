@@ -6,7 +6,7 @@ public class AnimationEventSO : ScriptableObject
 {
 
     public AnimationClip clip;
-    public float animationSpeed;
+   
     public List<AnimationEventEntry> events = new ();
    
 

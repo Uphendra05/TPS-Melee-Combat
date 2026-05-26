@@ -5,6 +5,7 @@ public class AnimationEventEntry
 {
     public string name = "New Event";
     public AnimationEventType eventType = AnimationEventType.Notify;
+    public float animationSpeed;
 
     // Notify — single point
     [SerializeReference] public BaseAnimationNotify notify;

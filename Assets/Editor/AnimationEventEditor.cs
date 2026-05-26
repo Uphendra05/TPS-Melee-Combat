@@ -14,6 +14,8 @@ public class AnimationEventEditor : Editor
     private float _previewTime = 0f;
     private bool _isPlaying = false;
     private double _lastEditorTime;
+    private bool _showTooltip = false;
+    private Rect _tooltipRect;
 
     // Styles
     private GUIStyle _notifyTagStyle;
@@ -26,6 +28,7 @@ public class AnimationEventEditor : Editor
 
     private static readonly System.Type[] NotifyStateTypes = TypeCache.GetTypesDerivedFrom<BaseAnimationNotifyState>()
         .Where(t => !t.IsAbstract).ToArray();
+
 
     private void OnEnable()
     {
@@ -78,9 +81,11 @@ public class AnimationEventEditor : Editor
         serializedObject.Update();
 
         EditorGUILayout.PropertyField(serializedObject.FindProperty("clip"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("animationSpeed"));
-
         EditorGUILayout.Space(8);
+
+
+       
+
 
         // Begin bordered container
         Rect containerRect = EditorGUILayout.BeginVertical();
@@ -93,7 +98,8 @@ public class AnimationEventEditor : Editor
         // Background fill
         EditorGUI.DrawRect(containerRect, new Color(0.15f, 0.15f, 0.15f));
 
-        GUILayout.Space(6);
+
+        GUILayout.Space(2);
         EditorGUILayout.LabelField("Timeline", _headerStyle);
         GUILayout.Space(4);
         DrawTimeline();
@@ -105,25 +111,14 @@ public class AnimationEventEditor : Editor
         DrawEventList();
         GUILayout.Space(6);
 
+        DrawTitleBanner();
+
         EditorGUILayout.EndVertical();
 
         serializedObject.ApplyModifiedProperties();
 
         if (_isPlaying) Repaint();
-    }
-
-    private void DrawLegend()
-    {
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("  ♦ NOTIFY", _notifyTagStyle, GUILayout.Width(80));
-        GUILayout.Label("single point in time — fires once", EditorStyles.miniLabel);
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("  ■ STATE", _stateTagStyle, GUILayout.Width(80));
-        GUILayout.Label("duration — begin / tick / end", EditorStyles.miniLabel);
-        EditorGUILayout.EndHorizontal();
-    }
+    }   
 
     private void DrawTimeline()
     {
@@ -351,8 +346,7 @@ public class AnimationEventEditor : Editor
 
         EditorGUILayout.EndHorizontal();
     }
-
-    // Preview
+    
     public override bool HasPreviewGUI() => _data != null && _data.clip != null;
 
     public override void OnPreviewGUI(Rect r, GUIStyle background)
@@ -393,7 +387,7 @@ public class AnimationEventEditor : Editor
         if (_isPlaying)
         {
             double now = EditorApplication.timeSinceStartup;
-            _previewTime += (float)(now - _lastEditorTime) * _data.animationSpeed;
+            _previewTime += (float)(now - _lastEditorTime);
             _lastEditorTime = now;
             if (_previewTime > _data.clip.length) _previewTime = 0f;
             Repaint();
@@ -482,6 +476,127 @@ public class AnimationEventEditor : Editor
             EditorGUILayout.PropertyField(prop, GUIContent.none, true, GUILayout.ExpandWidth(true));
 
         EditorGUILayout.EndHorizontal();
+    }   
+
+    private void DrawTitleBanner()
+    {
+        Rect bannerRect = EditorGUILayout.GetControlRect(false, 42);
+        EditorGUI.DrawRect(bannerRect, new Color(0.15f, 0.15f, 0.15f));
+
+        EditorGUI.LabelField(
+            new Rect(bannerRect.x, bannerRect.y + 4, bannerRect.width, 20),
+            "CUSTOM ANIMATION EVENT",
+            new GUIStyle(EditorStyles.boldLabel)
+            {
+                fontSize = 13,
+                alignment = TextAnchor.MiddleCenter,
+                normal = { textColor = Color.white }
+            });
+
+        EditorGUI.LabelField(
+            new Rect(bannerRect.x, bannerRect.y + 22, bannerRect.width, 16),
+            target.name,
+            new GUIStyle(EditorStyles.centeredGreyMiniLabel)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                normal = { textColor = new Color(1f, 1f, 1f, 0.5f) }
+            });
+
+        // Info icon in top right corner of banner
+        Rect infoRect = new Rect(bannerRect.xMax - 24, bannerRect.y + 8, 18, 18);
+        GUI.Label(infoRect, new GUIContent("?", ""), new GUIStyle(EditorStyles.boldLabel)
+        {
+            fontSize = 12,
+            alignment = TextAnchor.MiddleCenter,
+            normal = { textColor = new Color(1f, 1f, 1f, 0.6f) },
+            hover = { textColor = Color.white },
+        });
+
+        // Track hover on info icon
+        if (infoRect.Contains(Event.current.mousePosition))
+        {
+            _showTooltip = true;
+            Repaint();
+        }
+        else if (!_tooltipRect.Contains(Event.current.mousePosition))
+        {
+            _showTooltip = false;
+            Repaint();
+        }
+
+        // Draw popup
+        if (_showTooltip)
+            DrawTooltipPopup(new Vector2(bannerRect.xMax - 260, bannerRect.yMax + 4));
+    }    
+
+    private void DrawTooltipPopup(Vector2 position)
+    {
+        float width = 250f;
+        float height = 200f;
+        _tooltipRect = new Rect(position.x, position.y, width, height);
+
+        // Shadow
+        EditorGUI.DrawRect(
+            new Rect(_tooltipRect.x + 3, _tooltipRect.y + 3, _tooltipRect.width, _tooltipRect.height),
+            new Color(0f, 0f, 0f, 0.4f));
+
+        // Border
+        EditorGUI.DrawRect(_tooltipRect, new Color(0.13f, 0.13f, 0.13f));
+
+        // Background
+        EditorGUI.DrawRect(
+            new Rect(_tooltipRect.x + 1, _tooltipRect.y + 1, _tooltipRect.width - 2, _tooltipRect.height - 2),
+            new Color(0.22f, 0.22f, 0.22f));
+
+        float x = _tooltipRect.x + 10;
+        float y = _tooltipRect.y + 10;
+        float w = _tooltipRect.width - 20;
+
+        // Header
+        EditorGUI.LabelField(new Rect(x, y, w, 18), "How to use", new GUIStyle(EditorStyles.boldLabel)
+        {
+            normal = { textColor = new Color(0.82f, 0.82f, 0.82f) }
+        });
+
+        y += 22;
+        EditorGUI.DrawRect(new Rect(x, y, w, 1), new Color(0.13f, 0.13f, 0.13f));
+        y += 8;
+
+        // Notify row
+        EditorGUI.DrawRect(new Rect(x, y, 10, 10), new Color(0.25f, 0.45f, 0.25f));
+        EditorGUI.LabelField(new Rect(x + 14, y - 1, w - 14, 16), "♦ Notify — fires once at a point in time",
+            new GUIStyle(EditorStyles.miniLabel)
+            {
+                normal = { textColor = new Color(0.82f, 0.82f, 0.82f) }
+            });
+        y += 18;
+
+        // State row
+        EditorGUI.DrawRect(new Rect(x, y, 10, 10), new Color(0.20f, 0.30f, 0.48f));
+        EditorGUI.LabelField(new Rect(x + 14, y - 1, w - 14, 16), "■ State — has begin, tick and end",
+            new GUIStyle(EditorStyles.miniLabel)
+            {
+                normal = { textColor = new Color(0.82f, 0.82f, 0.82f) }
+            });
+        y += 22;
+
+        EditorGUI.DrawRect(new Rect(x, y, w, 1), new Color(0.13f, 0.13f, 0.13f));
+        y += 8;
+
+        // Steps
+        var stepStyle = new GUIStyle(EditorStyles.miniLabel)
+        {
+            normal = { textColor = new Color(0.55f, 0.55f, 0.55f) },
+            wordWrap = true
+        };
+
+        EditorGUI.LabelField(new Rect(x, y, w, 16), "1. Assign an Animation Clip above", stepStyle);
+        y += 16;
+        EditorGUI.LabelField(new Rect(x, y, w, 16), "2. Add Notify or State events below", stepStyle);
+        y += 16;
+        EditorGUI.LabelField(new Rect(x, y, w, 16), "3. Set timing to match your clip", stepStyle);
+        y += 16;
+        EditorGUI.LabelField(new Rect(x, y, w, 32), "4. Assign an AnimationEventPlayer\n    to your character to fire them", stepStyle);
     }
 
     private void CleanupPreview()
