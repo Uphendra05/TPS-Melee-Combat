@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Example
   m_EditorClassIdentifier: Assembly-CSharp::AnimationEventSO
   clip: {fileID: 1827226128182048838, guid: c44b1a1611e2ba24da88eb8950bace42, type: 3}
-  animationSpeed: 0
+  animationSpeed: 1
   events:
   - name: Sample
     eventType: 0
@@ -25,6 +25,16 @@ MonoBehaviour:
     startTime: 0.1
     endTime: 0.4
     color: {r: 1, g: 0, b: 0, a: 1}
+  - name: ANS_NewState
+    eventType: 1
+    notify:
+      rid: -2
+    triggerTime: 0.3
+    notifyState:
+      rid: -2
+    startTime: 0.1
+    endTime: 0.4
+    color: {r: 0.4, g: 0.6, b: 1, a: 1}
   references:
     version: 2
     RefIds:

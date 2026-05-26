@@ -27,5 +27,13 @@ public enum PlayerStates
     Attack = 6
 }
 
+public enum AnimationEventType 
+{ 
+    
+    Notify,      
+    NotifyState 
+
+}
+
 
 

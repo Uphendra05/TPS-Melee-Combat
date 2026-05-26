@@ -81,14 +81,31 @@ public class AnimationEventEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("animationSpeed"));
 
         EditorGUILayout.Space(8);
+
+        // Begin bordered container
+        Rect containerRect = EditorGUILayout.BeginVertical();
+
+        // Border (drawn 1px outside)
+        EditorGUI.DrawRect(
+            new Rect(containerRect.x - 1, containerRect.y - 1, containerRect.width + 2, containerRect.height + 2),
+            new Color(0.60f, 0.60f, 0.60f));
+
+        // Background fill
+        EditorGUI.DrawRect(containerRect, new Color(0.15f, 0.15f, 0.15f));
+
+        GUILayout.Space(6);
         EditorGUILayout.LabelField("Timeline", _headerStyle);
+        GUILayout.Space(4);
         DrawTimeline();
 
-        EditorGUILayout.Space(8);
+        GUILayout.Space(6);
         EditorGUILayout.LabelField("Events", _headerStyle);
-        DrawLegend();
-        EditorGUILayout.Space(4);
+        //DrawLegend();
+       // GUILayout.Space(4);
         DrawEventList();
+        GUILayout.Space(6);
+
+        EditorGUILayout.EndVertical();
 
         serializedObject.ApplyModifiedProperties();
 
