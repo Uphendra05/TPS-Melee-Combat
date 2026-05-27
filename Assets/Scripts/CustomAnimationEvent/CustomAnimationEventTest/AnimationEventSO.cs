@@ -2,14 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Example/AnimationEvent")]
-public class AnimationEventSO : ScriptableObject
+public class AnimationEventSO : BaseAnimationEventSO
 {
 
-    public AnimationClip clip;
+    public float timer;
    
-    public List<AnimationEventEntry> events = new ();
-   
-
 
 }
 

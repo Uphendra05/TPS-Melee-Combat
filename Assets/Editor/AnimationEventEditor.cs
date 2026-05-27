@@ -5,10 +5,11 @@ using UnityEngine;
 
 
 
-[CustomEditor(typeof(AnimationEventSO))]
+[CustomEditor(typeof(BaseAnimationEventSO), editorForChildClasses: true)]
 public class AnimationEventEditor : Editor
 {
-    private AnimationEventSO _data;
+    private BaseAnimationEventSO _data;
+
     private PreviewRenderUtility _previewRenderer;
     private GameObject _previewInstance;
     private float _previewTime = 0f;
@@ -32,7 +33,7 @@ public class AnimationEventEditor : Editor
 
     private void OnEnable()
     {
-        _data = (AnimationEventSO)target;
+        _data = (BaseAnimationEventSO)target;
     }
 
     private void OnDisable()
@@ -47,16 +48,16 @@ public class AnimationEventEditor : Editor
 
         _notifyTagStyle = new GUIStyle(EditorStyles.miniLabel)
         {
-            normal = { textColor = Color.black, background = MakeTex(1, 1, new Color(0.4f, 0.9f, 0.4f)) },
-            padding = new RectOffset(4, 4, 1, 1),
+            normal = { textColor = Color.white, background = MakeTex(1, 1, new Color(0.3f, 0.3f, 0.3f)) },
+            padding = new RectOffset(2, 2, 1, 1),
             fontStyle = FontStyle.Bold,
             alignment = TextAnchor.MiddleCenter
         };
 
         _stateTagStyle = new GUIStyle(EditorStyles.miniLabel)
         {
-            normal = { textColor = Color.black, background = MakeTex(1, 1, new Color(0.4f, 0.6f, 1f)) },
-            padding = new RectOffset(4, 4, 1, 1),
+            normal = { textColor = Color.white, background = MakeTex(1, 1, new Color(0.3f, 0.3f, 0.3f)) },
+            padding = new RectOffset(2, 2, 1, 1),
             fontStyle = FontStyle.Bold,
             alignment = TextAnchor.MiddleCenter
         };
@@ -81,10 +82,10 @@ public class AnimationEventEditor : Editor
         serializedObject.Update();
 
         EditorGUILayout.PropertyField(serializedObject.FindProperty("clip"));
+        
+        DrawChildProperties();
+
         EditorGUILayout.Space(8);
-
-
-       
 
 
         // Begin bordered container
@@ -106,8 +107,7 @@ public class AnimationEventEditor : Editor
 
         GUILayout.Space(6);
         EditorGUILayout.LabelField("Events", _headerStyle);
-        //DrawLegend();
-       // GUILayout.Space(4);
+        
         DrawEventList();
         GUILayout.Space(6);
 
@@ -118,8 +118,21 @@ public class AnimationEventEditor : Editor
         serializedObject.ApplyModifiedProperties();
 
         if (_isPlaying) Repaint();
-    }   
+    }
 
+    private void DrawChildProperties()
+    {
+        SerializedProperty prop = serializedObject.GetIterator();
+        prop.NextVisible(true);
+
+        while (prop.NextVisible(false))
+        {
+            if (prop.name == "clip") continue;
+            if (prop.name == "events") continue;
+
+            EditorGUILayout.PropertyField(prop, true);
+        }
+    }
     private void DrawTimeline()
     {
         if (_data.clip == null)
@@ -176,7 +189,7 @@ public class AnimationEventEditor : Editor
                 i % 2 == 0 ? new Color(0.17f, 0.17f, 0.17f) : new Color(0.15f, 0.15f, 0.15f));
 
             Rect tagRect = new Rect(timelineRect.x + 2, y + 2, 52, rowHeight - 4);
-            GUI.Label(tagRect, isState ? "■ STATE" : "♦ NOTIFY", isState ? _stateTagStyle : _notifyTagStyle);
+            GUI.Label(tagRect, isState ? " ■ STATE " : " ♦ NOTIFY ", isState ? _stateTagStyle : _notifyTagStyle);
 
             Rect nameRect = new Rect(timelineRect.x + 58, y + 2, labelWidth - 62, rowHeight - 4);
             GUI.Label(nameRect, ev.name, new GUIStyle(EditorStyles.miniLabel)

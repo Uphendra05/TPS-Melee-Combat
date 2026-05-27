@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 public class AnimationEventPlayer : MonoBehaviour
 {
     private Animator _animator;
-    private AnimationEventSO _currentData;
+    private BaseAnimationEventSO _currentData;
     private float _previousTime = 0f;
     private HashSet<int> _activeStates = new();
     private int _clipNameHash;
@@ -15,7 +15,7 @@ public class AnimationEventPlayer : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    public void Play(AnimationEventSO data)
+    public void Play(BaseAnimationEventSO data)
     {
         StopAllActiveStates();
         _currentData = data;

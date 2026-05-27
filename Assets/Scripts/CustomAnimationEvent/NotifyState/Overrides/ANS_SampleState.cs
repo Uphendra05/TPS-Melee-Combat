@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ANS_SampleState : BaseAnimationNotifyState
+public sealed class ANS_SampleState : BaseAnimationNotifyState
 {
    
     public override void OnNotifyStart(Animator animator, float totalDuration, UnityAction callback = null)

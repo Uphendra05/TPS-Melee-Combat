@@ -18,8 +18,8 @@ MonoBehaviour:
     eventType: 0
     animationSpeed: 0
     notify:
-      rid: -2
-    triggerTime: 0.1
+      rid: 1972731197147316298
+    triggerTime: 0.3
     notifyState:
       rid: -2
     startTime: 0
@@ -32,12 +32,19 @@ MonoBehaviour:
       rid: -2
     triggerTime: 0.1
     notifyState:
-      rid: -2
-    startTime: 0.1
-    endTime: 0.4
+      rid: 1972731197147316299
+    startTime: 0.36
+    endTime: 0.7
     color: {r: 0.4, g: 0.6, b: 1, a: 1}
+  timer: 0
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1972731197147316298
+      type: {class: AN_Sample, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1972731197147316299
+      type: {class: ANS_SampleState, ns: , asm: Assembly-CSharp}
+      data: 
