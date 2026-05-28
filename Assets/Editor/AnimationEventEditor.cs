@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -22,8 +23,14 @@ public class AnimationEventEditor : Editor
     private GUIStyle _notifyTagStyle;
     private GUIStyle _stateTagStyle;
     private GUIStyle _headerStyle;
+    private GUIStyle _titleStyle;
+    private GUIStyle _targetStyle;
+    private GUIStyle _infoIconStyle; 
 
-    
+    private SerializedProperty _clipProp;
+    private List<Texture2D> _createdTextures = new();
+
+
     private static readonly System.Type[] NotifyTypes = TypeCache.GetTypesDerivedFrom<BaseAnimationNotify>()
         .Where(t => !t.IsAbstract).ToArray();
 
@@ -34,17 +41,30 @@ public class AnimationEventEditor : Editor
     private void OnEnable()
     {
         _data = (BaseAnimationEventSO)target;
+
+        _clipProp = serializedObject.FindProperty("clip");
+
+
+        InitStyles();
     }
 
     private void OnDisable()
     {
+        foreach (var tex in _createdTextures)
+            if (tex != null) DestroyImmediate(tex);
+        _createdTextures.Clear();
+
+        _notifyTagStyle = null; 
+        _stateTagStyle = null;
+        _headerStyle = null;
+
         StopAnimationMode();
         CleanupPreview();
     }
 
     private void InitStyles()
     {
-        if (_notifyTagStyle != null) return;
+        if (_notifyTagStyle != null ) return;
 
         _notifyTagStyle = new GUIStyle(EditorStyles.miniLabel)
         {
@@ -66,6 +86,30 @@ public class AnimationEventEditor : Editor
         {
             fontSize = 11
         };
+
+        _titleStyle = new GUIStyle(EditorStyles.boldLabel)
+        {
+            fontSize = 13,
+            alignment = TextAnchor.MiddleCenter,
+            normal = { textColor = Color.white }
+        };
+
+        _targetStyle = new GUIStyle(EditorStyles.centeredGreyMiniLabel)
+        {
+            alignment = TextAnchor.MiddleCenter,
+            normal = { textColor = new Color(1f, 1f, 1f, 0.5f) }
+        };
+
+        _infoIconStyle = new GUIStyle(EditorStyles.centeredGreyMiniLabel)
+        {
+            fontSize = 12,
+            alignment = TextAnchor.MiddleCenter,
+            normal = { textColor = new Color(1f, 1f, 1f, 0.6f) },
+            hover = { textColor = Color.white },
+        };
+
+
+
     }
 
     private Texture2D MakeTex(int w, int h, Color col)
@@ -73,15 +117,15 @@ public class AnimationEventEditor : Editor
         var tex = new Texture2D(w, h);
         tex.SetPixel(0, 0, col);
         tex.Apply();
+        _createdTextures.Add(tex);
         return tex;
     }
 
     public override void OnInspectorGUI()
     {
-        InitStyles();
         serializedObject.Update();
 
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("clip"));
+        EditorGUILayout.PropertyField(_clipProp);
         
         DrawChildProperties();
 
@@ -92,9 +136,7 @@ public class AnimationEventEditor : Editor
         Rect containerRect = EditorGUILayout.BeginVertical();
 
         // Border (drawn 1px outside)
-        EditorGUI.DrawRect(
-            new Rect(containerRect.x - 1, containerRect.y - 1, containerRect.width + 2, containerRect.height + 2),
-            new Color(0.60f, 0.60f, 0.60f));
+        EditorGUI.DrawRect(new Rect(containerRect.x - 1, containerRect.y - 1, containerRect.width + 2, containerRect.height + 2),Color.white);
 
         // Background fill
         EditorGUI.DrawRect(containerRect, new Color(0.15f, 0.15f, 0.15f));
@@ -133,6 +175,7 @@ public class AnimationEventEditor : Editor
             EditorGUILayout.PropertyField(prop, true);
         }
     }
+
     private void DrawTimeline()
     {
         if (_data.clip == null)
@@ -175,8 +218,7 @@ public class AnimationEventEditor : Editor
 
         if (_data.events.Count == 0)
         {
-            GUI.Label(new Rect(trackAreaX + 8, timelineRect.y + 8, trackAreaW, 20),
-                "No events — add one below", EditorStyles.centeredGreyMiniLabel);
+            GUI.Label(new Rect(trackAreaX + 8, timelineRect.y + 8, trackAreaW, 20), "No events — add one below", EditorStyles.centeredGreyMiniLabel);
         }
 
         for (int i = 0; i < _data.events.Count; i++)
@@ -192,6 +234,7 @@ public class AnimationEventEditor : Editor
             GUI.Label(tagRect, isState ? " ■ STATE " : " ♦ NOTIFY ", isState ? _stateTagStyle : _notifyTagStyle);
 
             Rect nameRect = new Rect(timelineRect.x + 58, y + 2, labelWidth - 62, rowHeight - 4);
+
             GUI.Label(nameRect, ev.name, new GUIStyle(EditorStyles.miniLabel)
             {
                 normal = { textColor = ev.color },
@@ -496,34 +539,12 @@ public class AnimationEventEditor : Editor
         Rect bannerRect = EditorGUILayout.GetControlRect(false, 42);
         EditorGUI.DrawRect(bannerRect, new Color(0.15f, 0.15f, 0.15f));
 
-        EditorGUI.LabelField(
-            new Rect(bannerRect.x, bannerRect.y + 4, bannerRect.width, 20),
-            "CUSTOM ANIMATION EVENT",
-            new GUIStyle(EditorStyles.boldLabel)
-            {
-                fontSize = 13,
-                alignment = TextAnchor.MiddleCenter,
-                normal = { textColor = Color.white }
-            });
+        EditorGUI.LabelField(  new Rect(bannerRect.x, bannerRect.y + 4, bannerRect.width, 20), "CUSTOM ANIMATION EVENT", _titleStyle);
 
-        EditorGUI.LabelField(
-            new Rect(bannerRect.x, bannerRect.y + 22, bannerRect.width, 16),
-            target.name,
-            new GUIStyle(EditorStyles.centeredGreyMiniLabel)
-            {
-                alignment = TextAnchor.MiddleCenter,
-                normal = { textColor = new Color(1f, 1f, 1f, 0.5f) }
-            });
+        EditorGUI.LabelField( new Rect(bannerRect.x, bannerRect.y + 22, bannerRect.width, 16),target.name, _targetStyle);
 
-        // Info icon in top right corner of banner
         Rect infoRect = new Rect(bannerRect.xMax - 24, bannerRect.y + 8, 18, 18);
-        GUI.Label(infoRect, new GUIContent("?", ""), new GUIStyle(EditorStyles.boldLabel)
-        {
-            fontSize = 12,
-            alignment = TextAnchor.MiddleCenter,
-            normal = { textColor = new Color(1f, 1f, 1f, 0.6f) },
-            hover = { textColor = Color.white },
-        });
+        GUI.Label(infoRect, new GUIContent("?", ""), _infoIconStyle);
 
         // Track hover on info icon
         if (infoRect.Contains(Event.current.mousePosition))

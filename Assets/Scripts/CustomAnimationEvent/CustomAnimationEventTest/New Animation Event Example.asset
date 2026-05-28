@@ -13,9 +13,22 @@ MonoBehaviour:
   m_Name: New Animation Event Example
   m_EditorClassIdentifier: Assembly-CSharp::AnimationEventExample
   clip: {fileID: -8906500331013074896, guid: 31614958f0e8d1340b5d6b2fba542c59, type: 3}
-  events: []
+  events:
+  - name: AN_NewNotify
+    eventType: 0
+    animationSpeed: 0
+    notify:
+      rid: -2
+    triggerTime: 0.1
+    notifyState:
+      rid: -2
+    startTime: 0
+    endTime: 0
+    color: {r: 0.4, g: 0.9, b: 0.4, a: 1}
   number: 0
   damagemulti: 0
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
