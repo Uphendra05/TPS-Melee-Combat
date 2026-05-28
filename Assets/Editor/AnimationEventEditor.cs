@@ -326,7 +326,7 @@ public class AnimationEventEditor : Editor
         EditorGUILayout.Space(4);
         EditorGUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("+ Add Notify ♦", _notifyTagStyle, GUILayout.Height(24)))
+        if (GUILayout.Button("+ Add Notify ♦", GUILayout.Height(24)))
         {
             eventsProp.InsertArrayElementAtIndex(eventsProp.arraySize);
             var el = eventsProp.GetArrayElementAtIndex(eventsProp.arraySize - 1);
@@ -341,7 +341,7 @@ public class AnimationEventEditor : Editor
             if (ns != null) ns.managedReferenceValue = null;
         }
 
-        if (GUILayout.Button("+ Add State ■", _stateTagStyle, GUILayout.Height(24)))
+        if (GUILayout.Button("+ Add State ■", GUILayout.Height(24)))
         {
             eventsProp.InsertArrayElementAtIndex(eventsProp.arraySize);
             var el = eventsProp.GetArrayElementAtIndex(eventsProp.arraySize - 1);
