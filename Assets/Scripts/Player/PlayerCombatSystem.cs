@@ -7,7 +7,7 @@ using UnityEngine.Timeline;
 public class PlayerCombatSystem : MonoBehaviour
 {
     [Section("Combos")]
-    public List<WeaponSO> weaponCombos;
+    public List<WeaponDataSO> weaponCombos;
 
     [Section("Settings")]
     public float comboResetTime = 1f; 
@@ -25,10 +25,23 @@ public class PlayerCombatSystem : MonoBehaviour
     public float detectZone = 1f;
     public float attackTurnSpeed;
     //public float lungeDistance;
-
+    private PlayerCameraController playerCameraController;
     private Transform currentTarget;
     private bool isAttacking;
     private CharacterController controller;
+
+    public TriggerCollisionEvent triggerCollisionEvent;
+
+    private void OnEnable()
+    {
+        triggerCollisionEvent.OnHit += DamageEnemy;
+    }
+
+    private void OnDisable()
+    {
+        triggerCollisionEvent.OnHit -= DamageEnemy;
+
+    }
 
     private void Start()
     {
@@ -37,7 +50,7 @@ public class PlayerCombatSystem : MonoBehaviour
         m_Animator.runtimeAnimatorController = overrideController;
         controller = GetComponent<CharacterController>();
         eventPlayer = GetComponent<AnimationEventPlayer>();
-
+        playerCameraController = GetComponent<PlayerCameraController>();
 
         eventPlayer.Play(animationEventSO);
     }
@@ -54,9 +67,6 @@ public class PlayerCombatSystem : MonoBehaviour
         AnimatorStateInfo state = m_Animator.GetCurrentAnimatorStateInfo(0);
         currentTarget = FindClosestEnemy();
         isAttacking = true;
-
-        
-
         //if (currentTarget != null)
         //{
         //    if (state.IsTag("LightAttack"))
@@ -74,6 +84,10 @@ public class PlayerCombatSystem : MonoBehaviour
         //    }
 
         //}
+
+
+
+
 
         if (state.IsTag("LightAttack") && state.normalizedTime < minAttackWindow)
         {
@@ -156,6 +170,15 @@ public class PlayerCombatSystem : MonoBehaviour
 
     }
 
+
+    public void DamageEnemy(Collider collider)
+    {
+        if (collider == this.GetComponent<Collider>() || currentTarget == null) return;
+
+        Debug.Log(collider.name);
+        currentTarget.GetComponent<EnemyCombatSystem>().EnemyGetHit();
+    }
+
     private void OnDrawGizmosSelected()
     {
        
@@ -163,5 +186,8 @@ public class PlayerCombatSystem : MonoBehaviour
       Gizmos.DrawWireSphere(transform.position, detectZone);
         
     }
+
+
+
 
 }

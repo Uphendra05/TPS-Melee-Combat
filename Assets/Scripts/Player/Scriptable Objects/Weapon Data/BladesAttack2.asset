@@ -17,3 +17,4 @@ MonoBehaviour:
   attackAnimation: {fileID: 1827226128182048838, guid: b155fcea20fbb804fbb9049fd118648d, type: 3}
   damage: 10
   damageMultiplier: 0.1
+  weaponModel: {fileID: 8120645335037908272, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}

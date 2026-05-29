@@ -16,6 +16,8 @@ public class PlayerCameraController : MonoBehaviour
     public float _rotationVelocity;
     public bool camLockedToTarget;
 
+
+
     private void Awake()
     {
         cameraFollowTarget.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
@@ -48,10 +50,12 @@ public class PlayerCameraController : MonoBehaviour
         {
             ResetCameraRotationAfterUnlockingTarget();
         }
-      
+
+       
+
     }
 
-
+   
     private void CameraMovement()
     {
         float mouseX = UnityEngine.Input.GetAxis("Mouse X") * mouseSens * Time.deltaTime;

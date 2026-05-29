@@ -36,7 +36,7 @@ public class PlayerAttackState : BasePlayerStates
         }
 
 
-       _ctx.horizontalVelocity = Vector3.zero;
+        _ctx.horizontalVelocity = Vector3.zero;
         _ctx.controller.Move(_ctx.m_Animator.deltaPosition);
 
         
