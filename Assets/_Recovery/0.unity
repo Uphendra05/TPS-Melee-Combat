@@ -178,7 +178,6 @@ MonoBehaviour:
   _camera: {fileID: 0}
   _rotationVelocity: 0
   camLockedToTarget: 0
-  _cam: {fileID: 0}
 --- !u!114 &24262883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2686,9 +2685,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_NoiseProfile: {fileID: 11400000, guid: a3dacaec0287d7444b4bd276816e1666, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 0
+  m_AmplitudeGain: 1
   m_FrequencyGain: 1
   mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &714028512
@@ -2771,9 +2770,7 @@ MonoBehaviour:
   m_AnimatedTarget: {fileID: 714028514}
   m_LayerIndex: 0
   m_ShowDebugText: 0
-  m_ChildCameras:
-  - {fileID: 2048520669}
-  - {fileID: 1407676188}
+  m_ChildCameras: []
   m_Instructions:
   - m_FullHash: 1548876364
     m_VirtualCamera: {fileID: 0}
@@ -3224,7 +3221,6 @@ MonoBehaviour:
   _camera: {fileID: 0}
   _rotationVelocity: 0
   camLockedToTarget: 0
-  _cam: {fileID: 0}
 --- !u!1 &785585927
 GameObject:
   m_ObjectHideFlags: 0
@@ -7657,17 +7653,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 328122835}
   m_LocalEulerAnglesHint: {x: 0, y: -344.999, z: 50.15}
---- !u!114 &2048520669 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2070925441746177913, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
-  m_PrefabInstance: {fileID: 1216659581}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &2048520670 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}

@@ -177,6 +177,8 @@ public class PlayerCombatSystem : MonoBehaviour
 
         Debug.Log(collider.name);
         currentTarget.GetComponent<EnemyCombatSystem>().EnemyGetHit();
+        playerCameraController.ShakeCamera(2.5f, 0.1f);
+
     }
 
     private void OnDrawGizmosSelected()

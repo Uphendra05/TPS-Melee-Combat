@@ -16,13 +16,19 @@ public class PlayerCameraController : MonoBehaviour
     public float _rotationVelocity;
     public bool camLockedToTarget;
 
+    [Section("Camera Shake")]
+    public CinemachineVirtualCamera _cam;
+    private float shakeTimer;
+
+
+
 
 
     private void Awake()
     {
         cameraFollowTarget.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
         _camera = Camera.main;
-
+        
 
     }
 
@@ -51,8 +57,27 @@ public class PlayerCameraController : MonoBehaviour
             ResetCameraRotationAfterUnlockingTarget();
         }
 
+        if (shakeTimer > 0)
+        {
+            shakeTimer -= Time.deltaTime;
+            if(shakeTimer <= 0)
+            {
+                CinemachineBasicMultiChannelPerlin noise = _cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+                noise.m_AmplitudeGain = 0f;
+
+            }
+
+        }
        
 
+    }
+
+    public void ShakeCamera(float intensity, float time)
+    {
+        CinemachineBasicMultiChannelPerlin noise = _cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+
+        noise.m_AmplitudeGain = intensity;
+        shakeTimer = time;
     }
 
    
