@@ -35,7 +35,7 @@ public class PlayerGroundedState : BasePlayerStates
             if (_ctx.playerInput.move.sqrMagnitude > 0.2f && _ctx.playerInput.isSprintPressed)
             {
                 _ctx.blendTreeVelocity = Mathf.SmoothDamp(_ctx.blendTreeVelocity, 1.0f, ref _ctx.refVelocity, 0.1f);
-                _ctx.moveSpeed = 7f;
+                _ctx.moveSpeed = 2.5f;
 
 
             }

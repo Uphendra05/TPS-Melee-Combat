@@ -178,7 +178,7 @@ MonoBehaviour:
   _camera: {fileID: 0}
   _rotationVelocity: 0
   camLockedToTarget: 0
-  _cam: {fileID: 0}
+  _cam: {fileID: 2048520669}
 --- !u!114 &24262883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,6 +202,9 @@ MonoBehaviour:
   animationEventSO: {fileID: 11400000, guid: 8693f6f2f2fa73a439c2537a929eaa36, type: 2}
   detectZone: 1
   attackTurnSpeed: 10
+  lungeDistance: 10
+  currentTarget: {fileID: 0}
+  isAttacking: 0
   triggerCollisionEvent: {fileID: 582282546}
 --- !u!114 &24262884
 MonoBehaviour:
@@ -231,7 +234,7 @@ MonoBehaviour:
     m_Bits: 64
   controller: {fileID: 24262886}
   velocity: {x: 0, y: 0, z: 0}
-  dodgeSpeed: 5
+  dodgeSpeed: 7
   dodgeDuration: 0.25
   dashCoolDown: 0.7
   isDodging: 0
@@ -3179,6 +3182,9 @@ MonoBehaviour:
   animationEventSO: {fileID: 0}
   detectZone: 1.04
   attackTurnSpeed: 10
+  lungeDistance: 0
+  currentTarget: {fileID: 0}
+  isAttacking: 0
   triggerCollisionEvent: {fileID: 0}
 --- !u!114 &763810633
 MonoBehaviour:

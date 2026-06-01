@@ -24,13 +24,15 @@ public class PlayerCombatSystem : MonoBehaviour
     [Section("Enemy Detection")]
     public float detectZone = 1f;
     public float attackTurnSpeed;
-    //public float lungeDistance;
+    public float lungeDistance;
     private PlayerCameraController playerCameraController;
-    private Transform currentTarget;
-    private bool isAttacking;
+    public Transform currentTarget;
+    public bool isAttacking;
     private CharacterController controller;
 
     public TriggerCollisionEvent triggerCollisionEvent;
+
+    
 
     private void OnEnable()
     {
@@ -67,23 +69,24 @@ public class PlayerCombatSystem : MonoBehaviour
         AnimatorStateInfo state = m_Animator.GetCurrentAnimatorStateInfo(0);
         currentTarget = FindClosestEnemy();
         isAttacking = true;
-        //if (currentTarget != null)
-        //{
-        //    if (state.IsTag("LightAttack"))
-        //    {
-        //        if (state.normalizedTime > 0.1f &&
-        //            state.normalizedTime < 0.35f)
-        //        {
-        //            Debug.Log("Lunge Attack done");
-        //            controller.Move(
-        //                transform.forward *
-        //                lungeDistance *
-        //                Time.deltaTime
-        //            );
-        //        }
-        //    }
 
-        //}
+        if (currentTarget != null)
+        {
+            if (state.IsTag("LightAttack"))
+            {
+                if (state.normalizedTime > 0.1f &&
+                    state.normalizedTime < 0.35f)
+                {
+                    Debug.Log("Lunge Attack done");
+                    controller.Move(
+                        transform.forward *
+                        lungeDistance *
+                        Time.deltaTime
+                    );
+                }
+            }
+
+        }
 
 
 
@@ -117,7 +120,7 @@ public class PlayerCombatSystem : MonoBehaviour
             lastClickTime = 0;
             isAttacking = false;
             currentTarget = null;
-            m_Animator.applyRootMotion = true;
+           
         }
     }
 
@@ -156,19 +159,18 @@ public class PlayerCombatSystem : MonoBehaviour
 
             if (direction != Vector3.zero)
             {
-                m_Animator.applyRootMotion = false;
                 Quaternion targetRot = Quaternion.LookRotation(direction);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, attackTurnSpeed * Time.deltaTime);
             }
         }
-        else if (currentTarget == null)
-        {
-            m_Animator.applyRootMotion = true;
-
-        }
-
-
+       
     }
+
+
+
+   
+
+
 
 
     public void DamageEnemy(Collider collider)

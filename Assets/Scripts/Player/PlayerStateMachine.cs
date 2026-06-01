@@ -56,6 +56,7 @@ public class PlayerStateMachine : MonoBehaviour
     public int jumpLandBlendTreeID { get; private set; }
 
     [HideInInspector] public float refVelocity;
+    private Vector3 m_RootMotionDelta;
 
 
     private void Awake()
@@ -91,20 +92,49 @@ public class PlayerStateMachine : MonoBehaviour
         moveDir = new Vector3(playerInput.move.x, 0.0f, playerInput.move.y).normalized;
         CurrentState.UpdateAllStates();
 
-      
-         Vector3 finalVelocity = horizontalVelocity;
-         finalVelocity.y = verticalVelocity;
-         controller.Move(finalVelocity * Time.deltaTime);
-       
+        // Always use root motion delta as horizontal velocity
+        horizontalVelocity = new Vector3(m_RootMotionDelta.x, 0f, m_RootMotionDelta.z);
 
-        
+        Vector3 finalVelocity = horizontalVelocity;
+        finalVelocity.y = verticalVelocity;
+        controller.Move(finalVelocity * Time.deltaTime);
 
-       
+
+
+
+
 
 
     }
 
-   
+
+    void OnAnimatorMove()
+    {
+        if (playerCombatSystem.isAttacking && playerCombatSystem.currentTarget != null)
+        {
+            Vector3 direction = playerCombatSystem.currentTarget.position - transform.position;
+            direction.y = 0f;
+
+            if (direction != Vector3.zero)
+            {
+                // Rotate to face target
+                Quaternion targetRot = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, playerCombatSystem.attackTurnSpeed * Time.deltaTime);
+
+                // Only keep the forward component of root motion (lunge toward enemy)
+                // Strip sideways drift completely
+                Vector3 delta = m_Animator.deltaPosition / Time.deltaTime;
+                float forwardAmount = Vector3.Dot(delta, transform.forward);
+                m_RootMotionDelta = transform.forward * Mathf.Max(0f, forwardAmount);
+            }
+        }
+        else
+        {
+            // Normal movement — full root motion
+            m_RootMotionDelta = (m_Animator.deltaPosition / Time.deltaTime) * moveSpeed;
+            transform.rotation *= m_Animator.deltaRotation;
+        }
+    }
 
 
     public void HandleEvade()
