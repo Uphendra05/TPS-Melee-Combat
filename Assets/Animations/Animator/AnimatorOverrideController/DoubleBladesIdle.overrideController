@@ -6,8 +6,8 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SpearAttack1
+  m_Name: DoubleBladesIdle
   m_Controller: {fileID: 9100000, guid: bcda4111f3deb6841bd2857260d67fd0, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 1827226128182048838, guid: d069f47c77aac0f48ab96bbf7d4aa430, type: 3}
-    m_OverrideClip: {fileID: 7400000, guid: 6c44c397d64b80543a6d1c1ccf35589e, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 08dab3ffa40b36444b84c3cc7f99cc26, type: 2}
+    m_OverrideClip: {fileID: 1827226128182048838, guid: 863c8e3a632085649a3f0daf396a055e, type: 3}

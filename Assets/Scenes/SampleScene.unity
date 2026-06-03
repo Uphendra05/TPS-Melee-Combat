@@ -228,7 +228,7 @@ MonoBehaviour:
   maxJumps: 2
   jumpsRemaining: 2
   groundCheck: {fileID: 843101363}
-  groundDistance: 0.4
+  groundDistance: 1
   groundMask:
     serializedVersion: 2
     m_Bits: 64
@@ -2989,6 +2989,14 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: bcda4111f3deb6841bd2857260d67fd0, type: 2}
+    - target: {fileID: 5866666021909216657, guid: dbe4191aa8a702544aef194689f1c4d2, type: 3}
+      propertyPath: m_UpdateMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: dbe4191aa8a702544aef194689f1c4d2, type: 3}
+      propertyPath: m_AnimatePhysics
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8453720867507500131, guid: dbe4191aa8a702544aef194689f1c4d2, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -3645,7 +3653,7 @@ Transform:
   m_GameObject: {fileID: 843101362}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.2238884, y: 0.268, z: 0.0070323944}
+  m_LocalPosition: {x: -0.023, y: 0.181, z: 0.0070323944}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5791,8 +5799,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1407676186}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.24031319, y: 0.09873804, z: 0.022870513, w: 0.9653898}
-  m_LocalPosition: {x: -1.1591784, y: 8.359395, z: -16.358961}
+  m_LocalRotation: {x: 0.2403029, y: 0.098664984, z: 0.02285749, w: 0.9654001}
+  m_LocalPosition: {x: -1.1587569, y: 8.359371, z: -16.359072}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8320,6 +8328,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1181446186}
     m_Modifications:
+    - target: {fileID: 7467261325652709996, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8120645335037908272, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}
       propertyPath: m_Name
       value: Dagger
@@ -8364,7 +8376,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -23.218
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7467261325652709996, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}
+    - {fileID: 3682412249650078567, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

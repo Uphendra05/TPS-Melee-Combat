@@ -36,7 +36,6 @@ public class PlayerAttackState : BasePlayerStates
         }
 
 
-        _ctx.horizontalVelocity = Vector3.zero;
 
         
 

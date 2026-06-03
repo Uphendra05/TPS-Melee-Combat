@@ -94,11 +94,13 @@ public class PlayerStateMachine : MonoBehaviour
 
         // Always use root motion delta as horizontal velocity
         horizontalVelocity = new Vector3(m_RootMotionDelta.x, 0f, m_RootMotionDelta.z);
-
-        Vector3 finalVelocity = horizontalVelocity;
+        
+        Vector3 finalVelocity = new Vector3(m_RootMotionDelta.x, 0f, m_RootMotionDelta.z); 
         finalVelocity.y = verticalVelocity;
-        controller.Move(finalVelocity * Time.deltaTime);
 
+        Debug.Log($"horizontalVelocity: {horizontalVelocity} | finalVelocity: {finalVelocity}");
+
+        controller.Move(finalVelocity * Time.deltaTime);
 
 
 
@@ -110,27 +112,30 @@ public class PlayerStateMachine : MonoBehaviour
 
     void OnAnimatorMove()
     {
-        if (playerCombatSystem.isAttacking && playerCombatSystem.currentTarget != null)
+        if (playerCombatSystem.isAttacking )
         {
-            Vector3 direction = playerCombatSystem.currentTarget.position - transform.position;
-            direction.y = 0f;
+            Vector3 delta = m_Animator.deltaPosition / Time.deltaTime;
+            float forwardAmount = Vector3.Dot(delta, transform.forward);
+            m_RootMotionDelta = transform.forward * Mathf.Max(0f, forwardAmount);
 
-            if (direction != Vector3.zero)
+            if( playerCombatSystem.currentTarget != null)
             {
-                // Rotate to face target
-                Quaternion targetRot = Quaternion.LookRotation(direction);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, playerCombatSystem.attackTurnSpeed * Time.deltaTime);
-
-                // Only keep the forward component of root motion (lunge toward enemy)
-                // Strip sideways drift completely
-                Vector3 delta = m_Animator.deltaPosition / Time.deltaTime;
-                float forwardAmount = Vector3.Dot(delta, transform.forward);
-                m_RootMotionDelta = transform.forward * Mathf.Max(0f, forwardAmount);
+                Vector3 direction = playerCombatSystem.currentTarget.position - transform.position;
+                direction.y = 0f;
+                if (direction != Vector3.zero)
+                {
+                    Quaternion targetRot = Quaternion.LookRotation(direction);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, playerCombatSystem.attackTurnSpeed * Time.deltaTime);
+                }
             }
+            else
+            {
+                transform.rotation *= m_Animator.deltaRotation;
+            }
+
         }
         else
         {
-            // Normal movement — full root motion
             m_RootMotionDelta = (m_Animator.deltaPosition / Time.deltaTime) * moveSpeed;
             transform.rotation *= m_Animator.deltaRotation;
         }

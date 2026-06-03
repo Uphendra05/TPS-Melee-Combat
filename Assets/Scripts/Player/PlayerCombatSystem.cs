@@ -48,13 +48,13 @@ public class PlayerCombatSystem : MonoBehaviour
     private void Start()
     {
         m_Animator = GetComponent<Animator>();
-        overrideController = new AnimatorOverrideController( m_Animator.runtimeAnimatorController );
+        overrideController = new AnimatorOverrideController(m_Animator.runtimeAnimatorController);
         m_Animator.runtimeAnimatorController = overrideController;
         controller = GetComponent<CharacterController>();
         eventPlayer = GetComponent<AnimationEventPlayer>();
         playerCameraController = GetComponent<PlayerCameraController>();
-
         eventPlayer.Play(animationEventSO);
+
     }
 
     private void Update()

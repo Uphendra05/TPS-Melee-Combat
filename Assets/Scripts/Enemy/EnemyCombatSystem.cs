@@ -23,6 +23,7 @@ public class EnemyCombatSystem : MonoBehaviour
     public void EnemyGetHit()
     {
         m_Animator.SetTrigger("OnHit");
+        Debug.Log("Enemy Got Hit");
 
     }
 
