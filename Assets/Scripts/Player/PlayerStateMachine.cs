@@ -8,7 +8,7 @@ public class PlayerStateMachine : MonoBehaviour
 {
 
     BasePlayerStates _currentState;
-    PlayerStateFactory _stateFactory;
+    PlayerStateLocator _stateFactory;
 
     [Section("Player Settings")]
     public PlayerStates ePlayerStates;
@@ -57,6 +57,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     [HideInInspector] public float refVelocity;
     private Vector3 m_RootMotionDelta;
+    private AnimationEventPlayer eventPlayer;
 
 
     private void Awake()
@@ -64,11 +65,16 @@ public class PlayerStateMachine : MonoBehaviour
         playerInput = GetComponent<InputHandler>();
         controller = GetComponent<CharacterController>();
         cameraController = GetComponent<PlayerCameraController>();
+        eventPlayer = GetComponent<AnimationEventPlayer>();
 
-        _stateFactory = new PlayerStateFactory(this);
+        _stateFactory = new PlayerStateLocator(this);
         CurrentState = _stateFactory.Grounded();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+
+        playerCombatSystem.Init(eventPlayer);
+
     }
 
     void Start()
@@ -89,20 +95,34 @@ public class PlayerStateMachine : MonoBehaviour
     {
 
 
-        moveDir = new Vector3(playerInput.move.x, 0.0f, playerInput.move.y).normalized;
+        /*moveDir = new Vector3(playerInput.move.x, 0.0f, playerInput.move.y).normalized;
         CurrentState.UpdateAllStates();
 
         // Always use root motion delta as horizontal velocity
         horizontalVelocity = new Vector3(m_RootMotionDelta.x, 0f, m_RootMotionDelta.z);
         
-        Vector3 finalVelocity = new Vector3(m_RootMotionDelta.x, 0f, m_RootMotionDelta.z); 
-        finalVelocity.y = verticalVelocity;
+        Vector3 finalVelocity = horizontalVelocity; 
+        finalVelocity.y = m_RootMotionDelta.y;
 
-        Debug.Log($"horizontalVelocity: {horizontalVelocity} | finalVelocity: {finalVelocity}");
+
+        controller.Move(finalVelocity * Time.deltaTime);*/  // Air Combo Basic
+
+
+
+        moveDir = new Vector3(playerInput.move.x, 0.0f, playerInput.move.y).normalized;
+        CurrentState.UpdateAllStates();
+
+        // Always use root motion delta as horizontal velocity
+        horizontalVelocity = new Vector3(m_RootMotionDelta.x, 0f, m_RootMotionDelta.z);
+
+        Vector3 finalVelocity = horizontalVelocity;
+        finalVelocity.y = m_RootMotionDelta.y;
+
 
         controller.Move(finalVelocity * Time.deltaTime);
 
-
+        AnimatorStateInfo state = m_Animator.GetCurrentAnimatorStateInfo(0);
+        eventPlayer.Tick(state.normalizedTime % 1);
 
 
 
@@ -112,13 +132,16 @@ public class PlayerStateMachine : MonoBehaviour
 
     void OnAnimatorMove()
     {
-        if (playerCombatSystem.isAttacking )
+
+        //m_RootMotionDelta = m_Animator.deltaPosition / Time.deltaTime;  // Air Combo Basic
+
+        if (playerCombatSystem.isAttacking)
         {
             Vector3 delta = m_Animator.deltaPosition / Time.deltaTime;
             float forwardAmount = Vector3.Dot(delta, transform.forward);
             m_RootMotionDelta = transform.forward * Mathf.Max(0f, forwardAmount);
 
-            if( playerCombatSystem.currentTarget != null)
+            if (playerCombatSystem.currentTarget != null)
             {
                 Vector3 direction = playerCombatSystem.currentTarget.position - transform.position;
                 direction.y = 0f;
@@ -139,6 +162,7 @@ public class PlayerStateMachine : MonoBehaviour
             m_RootMotionDelta = (m_Animator.deltaPosition / Time.deltaTime) * moveSpeed;
             transform.rotation *= m_Animator.deltaRotation;
         }
+
     }
 
 

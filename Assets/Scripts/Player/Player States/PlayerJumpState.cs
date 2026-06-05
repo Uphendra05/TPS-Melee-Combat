@@ -4,7 +4,7 @@ using UnityEngine.InputSystem.XR;
 
 public class PlayerJumpState : BasePlayerStates
 {
-    public PlayerJumpState(PlayerStateMachine currentContext, PlayerStateFactory stateFactory) : base(currentContext, stateFactory)
+    public PlayerJumpState(PlayerStateMachine currentContext, PlayerStateLocator stateFactory) : base(currentContext, stateFactory)
     {
         isRootState = true;
 

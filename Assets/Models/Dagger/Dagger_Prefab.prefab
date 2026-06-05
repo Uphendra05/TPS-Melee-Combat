@@ -63,9 +63,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0bd391087b68c9e48bb35aa8b9b5eb01, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3682412249650078567}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0bd391087b68c9e48bb35aa8b9b5eb01, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7467261325652709996}
   m_SourcePrefab: {fileID: 100100000, guid: 0bd391087b68c9e48bb35aa8b9b5eb01, type: 3}
 --- !u!1 &8120645335037908272 stripped
 GameObject:
@@ -93,15 +90,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.086686954, y: 0.59120935, z: 0.0395981}
   m_Center: {x: 0.00016299036, y: 0.52927876, z: 0.000003136657}
---- !u!114 &7467261325652709996
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8120645335037908272}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cb6301a05511804091b5517c3368439, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TriggerCollisionEvent

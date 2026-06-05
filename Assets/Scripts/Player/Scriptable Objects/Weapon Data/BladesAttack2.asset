@@ -12,9 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 054ad6c30a9ede9449eda93b425a0e73, type: 3}
   m_Name: BladesAttack2
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSO
+  clip: {fileID: 1827226128182048838, guid: b155fcea20fbb804fbb9049fd118648d, type: 3}
+  events:
+  - name: Hitbox
+    eventType: 1
+    animationSpeed: 0
+    notify:
+      rid: -2
+    triggerTime: 0
+    notifyState:
+      rid: 5337136224348930128
+    startTime: 0.24
+    endTime: 0.34
+    color: {r: 0.4, g: 0.6, b: 1, a: 1}
   weaponType: 2
   damageType: 2
-  attackAnimation: {fileID: 1827226128182048838, guid: b155fcea20fbb804fbb9049fd118648d, type: 3}
   damage: 10
   damageMultiplier: 0.1
   weaponModel: {fileID: 8120645335037908272, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 5337136224348930128
+      type: {class: ANS_TriggerHitbox, ns: , asm: Assembly-CSharp}
+      data: 

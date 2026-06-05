@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerAttackState : BasePlayerStates
 {
-    public PlayerAttackState(PlayerStateMachine currentContext, PlayerStateFactory stateFactory) : base(currentContext, stateFactory)
+    public PlayerAttackState(PlayerStateMachine currentContext, PlayerStateLocator stateFactory) : base(currentContext, stateFactory)
     {
         isRootState = true;
     }

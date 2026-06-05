@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerJogState : BasePlayerStates
 {
 
-    public PlayerJogState(PlayerStateMachine currentContext, PlayerStateFactory stateFactory) : base(currentContext, stateFactory)
+    public PlayerJogState(PlayerStateMachine currentContext, PlayerStateLocator stateFactory) : base(currentContext, stateFactory)
     {
 
     }

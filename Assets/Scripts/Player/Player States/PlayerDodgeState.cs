@@ -3,7 +3,7 @@ using UnityEngine.InputSystem.XR;
 
 public class PlayerDodgeState : BasePlayerStates
 {
-    public PlayerDodgeState(PlayerStateMachine currentContext, PlayerStateFactory stateFactory) : base(currentContext, stateFactory)
+    public PlayerDodgeState(PlayerStateMachine currentContext, PlayerStateLocator stateFactory) : base(currentContext, stateFactory)
     {
         isRootState = true;
     }

@@ -3,11 +3,11 @@
 public abstract class BasePlayerStates 
 {
     protected PlayerStateMachine _ctx;
-    protected PlayerStateFactory _stateFactory;
+    protected PlayerStateLocator _stateFactory;
     protected BasePlayerStates _currentSubState;
     protected BasePlayerStates _currentSuperState;
     protected bool isRootState = false;
-    public BasePlayerStates(PlayerStateMachine currentContext, PlayerStateFactory stateFactory)
+    public BasePlayerStates(PlayerStateMachine currentContext, PlayerStateLocator stateFactory)
     {
         _ctx = currentContext;
         _stateFactory = stateFactory;

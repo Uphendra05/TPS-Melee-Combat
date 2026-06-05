@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStateFactory
+public class PlayerStateLocator
 {
 
     Dictionary<string, BasePlayerStates> states = new Dictionary<string, BasePlayerStates>();
 
-    public PlayerStateFactory(PlayerStateMachine currentContext)
+    public PlayerStateLocator(PlayerStateMachine currentContext)
     {
 
         states.Add("Grounded", new PlayerGroundedState(currentContext,this));

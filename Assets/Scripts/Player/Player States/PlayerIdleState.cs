@@ -4,7 +4,7 @@ public class PlayerIdleState : BasePlayerStates
 {
 
 
-    public PlayerIdleState(PlayerStateMachine currentContext, PlayerStateFactory stateFactory) : base (currentContext, stateFactory)
+    public PlayerIdleState(PlayerStateMachine currentContext, PlayerStateLocator stateFactory) : base (currentContext, stateFactory)
     {
 
     }

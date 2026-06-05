@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerRunState : BasePlayerStates
 {
-    public PlayerRunState(PlayerStateMachine currentContext, PlayerStateFactory stateFactory) : base(currentContext, stateFactory)
+    public PlayerRunState(PlayerStateMachine currentContext, PlayerStateLocator stateFactory) : base(currentContext, stateFactory)
     {
 
     }

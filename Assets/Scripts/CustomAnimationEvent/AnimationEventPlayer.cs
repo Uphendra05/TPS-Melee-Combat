@@ -28,25 +28,18 @@ public class AnimationEventPlayer : MonoBehaviour
         if (_currentData == null) return;
         if (_currentData.clip == null) return;
 
-        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-        if (!stateInfo.IsName(_currentData.clip.name) && stateInfo.shortNameHash != _clipNameHash)
-        {
-            if (_activeStates.Count > 0)
-                StopAllActiveStates();
-            return;
-        }
-
         float duration = _currentData.clip.length;
         float currentTime = normalizedTime * duration;
 
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+
+        Debug.Log(stateInfo.ToString());
+
         for (int i = 0; i < _currentData.events.Count; i++)
         {
-            AnimationEventEntry ev = _currentData.events[i];
-
-            if (ev.IsState())
-                ProcessState(i, ev, currentTime, duration);
-            else
-                ProcessNotify(i, ev, currentTime);
+            var ev = _currentData.events[i];
+            if (ev.IsState()) ProcessState(i, ev, currentTime, duration);
+            else ProcessNotify(i, ev, currentTime);
         }
 
         _previousTime = currentTime;
@@ -84,7 +77,14 @@ public class AnimationEventPlayer : MonoBehaviour
         }
     }
 
-    public void StopAllActiveStates()
+    public void Stop()
+    {
+        StopAllActiveStates();
+        _currentData = null;
+        _previousTime = 0f;
+    }
+
+    private void StopAllActiveStates()
     {
         if (_currentData == null) return;
         foreach (int index in _activeStates)

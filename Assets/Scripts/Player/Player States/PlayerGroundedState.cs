@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerGroundedState : BasePlayerStates
 {
 
-    public PlayerGroundedState(PlayerStateMachine currentContext, PlayerStateFactory stateFactory) : base(currentContext, stateFactory)
+    public PlayerGroundedState(PlayerStateMachine currentContext, PlayerStateLocator stateFactory) : base(currentContext, stateFactory)
     {
         isRootState = true;
     }

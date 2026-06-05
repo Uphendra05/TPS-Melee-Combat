@@ -13,12 +13,11 @@ public class PlayerCombatSystem : MonoBehaviour
     public float comboResetTime = 1f; 
     public float minAttackWindow; 
     private Animator m_Animator;
-    private int comboCounter;
+    public int comboCounter;
     private float lastClickTime;    
     [HideInInspector] public bool attackFinished;
     private AnimatorOverrideController overrideController;
     public float animationSpeed;
-    private AnimationEventPlayer eventPlayer;
     public AnimationEventSO animationEventSO;
 
     [Section("Enemy Detection")]
@@ -31,19 +30,9 @@ public class PlayerCombatSystem : MonoBehaviour
     private CharacterController controller;
 
     public TriggerCollisionEvent triggerCollisionEvent;
-
-    
-
-    private void OnEnable()
-    {
-        triggerCollisionEvent.OnHit += DamageEnemy;
-    }
-
-    private void OnDisable()
-    {
-        triggerCollisionEvent.OnHit -= DamageEnemy;
-
-    }
+    private WeaponManager weaponManager;
+    private AnimationEventPlayer _eventPlayer;
+   
 
     private void Start()
     {
@@ -51,17 +40,23 @@ public class PlayerCombatSystem : MonoBehaviour
         overrideController = new AnimatorOverrideController(m_Animator.runtimeAnimatorController);
         m_Animator.runtimeAnimatorController = overrideController;
         controller = GetComponent<CharacterController>();
-        eventPlayer = GetComponent<AnimationEventPlayer>();
         playerCameraController = GetComponent<PlayerCameraController>();
-        eventPlayer.Play(animationEventSO);
+        weaponManager = GetComponent<WeaponManager>();
+      
 
     }
 
     private void Update()
     {
+
         ResetComboIfIdle();
-        AnimatorStateInfo state = m_Animator.GetCurrentAnimatorStateInfo(0);
-        eventPlayer.Tick(state.normalizedTime % 1);
+       
+    }
+
+
+    public void Init(AnimationEventPlayer eventPlayer)
+    {
+        _eventPlayer = eventPlayer;
     }
 
     public void Attack()
@@ -74,41 +69,28 @@ public class PlayerCombatSystem : MonoBehaviour
         {
             if (state.IsTag("LightAttack"))
             {
-                if (state.normalizedTime > 0.1f &&
-                    state.normalizedTime < 0.35f)
+                if (state.normalizedTime > 0.1f && state.normalizedTime < 0.35f)
                 {
                     Debug.Log("Lunge Attack done");
-                    controller.Move(
-                        transform.forward *
-                        lungeDistance *
-                        Time.deltaTime
-                    );
+                    controller.Move(transform.forward * lungeDistance * Time.deltaTime);
                 }
             }
-
         }
-
-
-
-
 
         if (state.IsTag("LightAttack") && state.normalizedTime < minAttackWindow)
-        {
             return;
-        }
-       
-
-
-        if (comboCounter >= weaponCombos.Count)
-        {
-            comboCounter = 0;
-        }
 
         lastClickTime = Time.time;
-        overrideController["DummyClip"] = weaponCombos[comboCounter].attackAnimation;
-        m_Animator.SetFloat("AttackSpeed",1.2f);
+        overrideController["DummyClip"] = weaponCombos[comboCounter].clip;
+        m_Animator.SetFloat("AttackSpeed", 1.2f);
         m_Animator.Play("LightAttack", 0, 0f);
+        weaponManager.EquipByType(weaponCombos[comboCounter].weaponType);
+        _eventPlayer.Play(weaponCombos[comboCounter]);
+
         comboCounter++;
+
+        if (comboCounter >= weaponCombos.Count)
+            comboCounter = 0;
     }
 
     private void ResetComboIfIdle()
@@ -120,7 +102,9 @@ public class PlayerCombatSystem : MonoBehaviour
             lastClickTime = 0;
             isAttacking = false;
             currentTarget = null;
-           
+            weaponManager.UnequipCurrent();
+            _eventPlayer.Stop(); 
+
         }
     }
 
@@ -165,11 +149,6 @@ public class PlayerCombatSystem : MonoBehaviour
         }
        
     }
-
-
-
-   
-
 
 
 

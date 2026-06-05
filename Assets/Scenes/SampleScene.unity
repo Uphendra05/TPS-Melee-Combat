@@ -197,15 +197,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9b91738a3da3fe344a67ee1e2d7e6069, type: 2}
   comboResetTime: 1
   minAttackWindow: 0.6
+  comboCounter: 0
   attackFinished: 0
   animationSpeed: 0
   animationEventSO: {fileID: 11400000, guid: 8693f6f2f2fa73a439c2537a929eaa36, type: 2}
   detectZone: 1
   attackTurnSpeed: 10
-  lungeDistance: 10
+  lungeDistance: 5
   currentTarget: {fileID: 0}
   isAttacking: 0
-  triggerCollisionEvent: {fileID: 582282546}
+  triggerCollisionEvent: {fileID: 0}
 --- !u!114 &24262884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,6 +338,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1398bcb36a4d35441a4865aa28410f4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimationEventPlayer
+--- !u!114 &24262889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24262878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4f5674aa38a85f46b58e1595d59097a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponsManager
+  _weapons:
+  - Type: 2
+    Weapon: {fileID: 1212359848}
+    OffHandedWeapon: {fileID: 1743774216}
 --- !u!1 &47132298
 GameObject:
   m_ObjectHideFlags: 0
@@ -2012,6 +2029,10 @@ PrefabInstance:
       value: 1.1483163
       objectReference: {fileID: 0}
     - target: {fileID: 3682412249650078567, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3682412249650078567, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}
       propertyPath: m_Center.x
       value: 0.00016360439
       objectReference: {fileID: 0}
@@ -2026,6 +2047,10 @@ PrefabInstance:
     - target: {fileID: 8120645335037908272, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}
       propertyPath: m_Name
       value: Dagger
+      objectReference: {fileID: 0}
+    - target: {fileID: 8120645335037908272, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8933315666756128650, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2070,24 +2095,16 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8120645335037908272, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1212359848}
   m_SourcePrefab: {fileID: 100100000, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}
 --- !u!4 &564328693 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8933315666756128650, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}
   m_PrefabInstance: {fileID: 564328692}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &582282546 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7467261325652709996, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}
-  m_PrefabInstance: {fileID: 564328692}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cb6301a05511804091b5517c3368439, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TriggerCollisionEvent
 --- !u!1 &629727727
 GameObject:
   m_ObjectHideFlags: 0
@@ -3044,6 +3061,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dbe4191aa8a702544aef194689f1c4d2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 24262888}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dbe4191aa8a702544aef194689f1c4d2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 24262889}
   m_SourcePrefab: {fileID: 100100000, guid: dbe4191aa8a702544aef194689f1c4d2, type: 3}
 --- !u!4 &758872665 stripped
 Transform:
@@ -3185,6 +3205,7 @@ MonoBehaviour:
   - {fileID: 0}
   comboResetTime: 1
   minAttackWindow: 0.6
+  comboCounter: 0
   attackFinished: 0
   animationSpeed: 0
   animationEventSO: {fileID: 0}
@@ -5209,6 +5230,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1200998442}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1212359844 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8120645335037908272, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}
+  m_PrefabInstance: {fileID: 564328692}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1212359848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212359844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ddd994b7e69f3d40971eabc89e56d05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Weapon
 --- !u!1001 &1216659581
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6554,6 +6592,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1738191048}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1743774216 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8120645335037908272, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}
+  m_PrefabInstance: {fileID: 6834205787878459050}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1775021442
 GameObject:
   m_ObjectHideFlags: 0
@@ -8335,6 +8378,10 @@ PrefabInstance:
     - target: {fileID: 8120645335037908272, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}
       propertyPath: m_Name
       value: Dagger
+      objectReference: {fileID: 0}
+    - target: {fileID: 8120645335037908272, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8933315666756128650, guid: 17a83c535f16a6b43a2817bb4753e6e1, type: 3}
       propertyPath: m_LocalPosition.x
