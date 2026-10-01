@@ -157,7 +157,7 @@ public class PlayerCombatSystem : MonoBehaviour
         if (collider == this.GetComponent<Collider>() || currentTarget == null) return;
 
         Debug.Log(collider.name);
-        currentTarget.GetComponent<EnemyCombatSystem>().EnemyGetHit();
+        currentTarget.GetComponent<EnemyCombatSystem>().EnemyGetHit(this.transform.position);
         playerCameraController.ShakeCamera(2.5f, 0.1f);
 
     }

@@ -6,5 +6,6 @@ public class AnimationEventExample : BaseAnimationEventSO
 {
     public int number;
     public float damagemulti;
+    public float sampleNumber;
     
 }

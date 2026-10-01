@@ -24,9 +24,54 @@ MonoBehaviour:
       rid: -2
     startTime: 0
     endTime: 0
-    color: {r: 0.4, g: 0.9, b: 0.4, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - name: AN_NewNotify
+    eventType: 0
+    animationSpeed: 0
+    notify:
+      rid: -2
+    triggerTime: 0.1
+    notifyState:
+      rid: -2
+    startTime: 0
+    endTime: 0
+    color: {r: 0, g: 0, b: 0, a: 1}
+  - name: ANS_NewState
+    eventType: 1
+    animationSpeed: 0
+    notify:
+      rid: -2
+    triggerTime: 0.1
+    notifyState:
+      rid: -2
+    startTime: 0.5
+    endTime: 0.7
+    color: {r: 0, g: 0.3333335, b: 1, a: 1}
+  - name: ANS_NewState
+    eventType: 1
+    animationSpeed: 0
+    notify:
+      rid: -2
+    triggerTime: 0.1
+    notifyState:
+      rid: -2
+    startTime: 0.1
+    endTime: 0.4
+    color: {r: 0.990566, g: 0, b: 0.32480842, a: 1}
+  - name: ANS_NewState
+    eventType: 1
+    animationSpeed: 0
+    notify:
+      rid: -2
+    triggerTime: 0.1
+    notifyState:
+      rid: -2
+    startTime: 0.8
+    endTime: 1
+    color: {r: 0.1254902, g: 0.1254902, b: 0.1254902, a: 1}
   number: 0
   damagemulti: 0
+  sampleNumber: 0.44
   references:
     version: 2
     RefIds:
