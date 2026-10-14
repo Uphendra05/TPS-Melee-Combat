@@ -57,7 +57,7 @@ public class AnimationEventEditor : Editor
         _notifyTagStyle = null; 
         _stateTagStyle = null;
         _headerStyle = null;
-
+_targetStyle = null;
         StopAnimationMode();
         CleanupPreview();
     }

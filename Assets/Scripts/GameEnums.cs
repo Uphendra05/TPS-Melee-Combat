@@ -35,5 +35,14 @@ public enum AnimationEventType
 
 }
 
+public enum NodeState
+{
+    Running,
+    Success,
+    Failure,
+    NotStarted
+
+}
+
 
 
