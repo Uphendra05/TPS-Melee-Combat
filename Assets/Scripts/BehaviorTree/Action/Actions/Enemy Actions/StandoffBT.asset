@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 996ffa6fea50aeb42a3ef19876733929, type: 3}
+  m_Name: StandoffBT
+  m_EditorClassIdentifier: Assembly-CSharp::StandoffTest
+  standoffRadius: 4.25
+  band: 1.5
+  exitMargin: 1.5
+  minMoveTime: 0.8
+  maxMoveTime: 2
+  pauseChance: 0.6
+  strafeSpeed: 2.3
+  allyMask:
+    serializedVersion: 2
+    m_Bits: 512
+  separationRadius: 2.5

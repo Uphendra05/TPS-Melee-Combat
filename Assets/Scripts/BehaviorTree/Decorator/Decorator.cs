@@ -35,4 +35,10 @@ public abstract class Decorator : Node
         base.Reset();
         child.Reset();
     }
+
+    public override void Abort()
+    {
+        child.Abort();
+        base.Abort();
+    }
 }

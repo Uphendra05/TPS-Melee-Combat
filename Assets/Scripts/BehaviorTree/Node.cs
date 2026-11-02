@@ -50,7 +50,14 @@ public abstract class Node
         CurrentState = NodeState.NotStarted;
     }
 
-  
+    public virtual void Abort()
+    {
+        if (CurrentState != NodeState.Running) return;
+        OnExit();
+        CurrentState = NodeState.NotStarted;
+    }
+
+
     protected virtual void OnAwake() { }   
     protected virtual void OnEntry() { }   
     protected abstract NodeState OnUpdate(); 

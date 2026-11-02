@@ -73,4 +73,6 @@ public class BehaviorTree : MonoBehaviour
             finished = true;
         }
     }
+
+    void OnDisable() { Root?.Abort(); }
 }

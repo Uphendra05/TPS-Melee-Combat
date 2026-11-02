@@ -55,4 +55,10 @@ public abstract class Composite : Node
             child.Reset();
         }
     }
+
+    public override void Abort()
+    {
+        foreach (Node child in children) child.Abort();
+        base.Abort();
+    }
 }
