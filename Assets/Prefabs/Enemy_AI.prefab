@@ -1250,8 +1250,15 @@ MonoBehaviour:
   animator: {fileID: 0}
   moveXParameter: MoveX
   moveYParameter: MoveY
-  maxSpeed: 3.5
+  speedParameter: AnimSpeed
+  fullBlendSpeed: 0.5
+  deadZone: 0.01
   dampTime: 0.1
+  forwardAuthoredSpeed: 3.5
+  backwardAuthoredSpeed: 2
+  strafeAuthoredSpeed: 2.3
+  minPlayback: 0.6
+  maxPlayback: 1.6
 --- !u!1 &3818882789956558578
 GameObject:
   m_ObjectHideFlags: 0

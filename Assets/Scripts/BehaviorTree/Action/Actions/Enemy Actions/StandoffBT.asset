@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 996ffa6fea50aeb42a3ef19876733929, type: 3}
   m_Name: StandoffBT
   m_EditorClassIdentifier: Assembly-CSharp::StandoffTest
-  standoffRadius: 4.25
+  standoffRadius: 4.75
   band: 1.5
   exitMargin: 1.5
   minMoveTime: 0.8
   maxMoveTime: 2
-  pauseChance: 0.6
+  pauseChance: 0.45
   strafeSpeed: 2.3
   allyMask:
     serializedVersion: 2
     m_Bits: 512
-  separationRadius: 2.5
+  separationRadius: 1.5
