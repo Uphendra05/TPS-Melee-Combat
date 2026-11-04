@@ -3,6 +3,7 @@ using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.Timeline;
+using static UnityEngine.Analytics.IAnalytic;
 
 public class PlayerCombatSystem : MonoBehaviour
 {
@@ -152,12 +153,9 @@ public class PlayerCombatSystem : MonoBehaviour
 
 
 
-    public void DamageEnemy(Collider collider)
+    public void OnWeaponHit(DamageInfo hit, IDamageable target)
     {
-        if (collider == this.GetComponent<Collider>() || currentTarget == null) return;
-
-        Debug.Log(collider.name);
-        currentTarget.GetComponent<EnemyCombatSystem>().EnemyGetHit(this.transform.position);
+       Debug.Log("Player hit enemy for " + hit.damage + " damage.");
         playerCameraController.ShakeCamera(2.5f, 0.1f);
 
     }

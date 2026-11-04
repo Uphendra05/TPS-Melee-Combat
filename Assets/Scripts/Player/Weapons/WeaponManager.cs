@@ -8,15 +8,17 @@ public class WeaponManager : MonoBehaviour
     public struct WeaponEntry
     {
         public WeaponType Type;
-        public Weapon Weapon;
-        public GameObject OffHandedWeapon;
+        public GameObject OffHandedWeapon; // Do I need this ?
     }
+
+    public WeaponTracer currentWeapon;
 
 
     [Section("Weapons")]
     [SerializeField] private List<WeaponEntry> _weapons;
     private WeaponEntry _currentEntry;
     private PlayerCombatSystem _combatSystem;
+    
 
 
     private Dictionary<WeaponType, WeaponEntry> _weaponMap = new();
@@ -36,23 +38,15 @@ public class WeaponManager : MonoBehaviour
         UnequipCurrent();
 
         _currentEntry = entry;
-        (entry.Weapon as MonoBehaviour)?.gameObject.SetActive(true);
-        entry.OffHandedWeapon?.SetActive(true); 
-        entry.Weapon.OnHit += _combatSystem.DamageEnemy;
+        currentWeapon.OnHitLanded += _combatSystem.OnWeaponHit;
     }
 
     public void UnequipCurrent()
     {
-        if (_currentEntry.Weapon != null)
-        {
-            _currentEntry.Weapon.OnHit -= _combatSystem.DamageEnemy;
-            (_currentEntry.Weapon as MonoBehaviour)?.gameObject.SetActive(false);
-            _currentEntry.OffHandedWeapon?.SetActive(false); 
-            _currentEntry = default;
-        }
+       currentWeapon.OnHitLanded -= _combatSystem.OnWeaponHit;
+       _currentEntry = default;
     }
 
-    public IWeapon GetEquippedWeapon() => _currentEntry.Weapon;
 
 
 }

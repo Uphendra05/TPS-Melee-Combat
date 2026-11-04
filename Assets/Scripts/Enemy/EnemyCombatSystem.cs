@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyCombatSystem : MonoBehaviour
+public class EnemyCombatSystem : MonoBehaviour, IDamageable
 {
     private Animator m_Animator;
     private float angle;
@@ -17,6 +17,12 @@ public class EnemyCombatSystem : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void TakeHit(in DamageInfo hit)
+    {
+        Debug.Log("EnemyAI TakeHit called >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        EnemyGetHit(hit.attacker.position);
     }
 
 
@@ -57,6 +63,5 @@ public class EnemyCombatSystem : MonoBehaviour
             return "OnHitBack";
     }
 
-
-
+    
 }

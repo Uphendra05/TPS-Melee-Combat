@@ -10,7 +10,7 @@ public class ANS_TriggerHitbox : BaseAnimationNotifyState
         if (weaponManager == null)
             weaponManager = animator.GetComponent<WeaponManager>();
 
-        weaponManager.GetEquippedWeapon()?.EnableHitbox();
+       // weaponManager.GetEquippedWeapon()?.EnableHitbox();
         Debug.Log("Inside trigger hitbox");
     }
 
@@ -21,7 +21,7 @@ public class ANS_TriggerHitbox : BaseAnimationNotifyState
 
     public override void OnNotifyEnd(Animator animator, UnityAction callback = null)
     {
-        weaponManager.GetEquippedWeapon()?.DisableHitbox();
+        //weaponManager.GetEquippedWeapon()?.DisableHitbox();
         Debug.Log("outside trigger hitbox");
 
     }

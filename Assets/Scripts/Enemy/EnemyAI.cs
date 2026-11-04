@@ -67,7 +67,5 @@ public class EnemyAI : MonoBehaviour
         agent.Move(direction * speed * Time.deltaTime);
     }
 
-
-
-
+   
 }
