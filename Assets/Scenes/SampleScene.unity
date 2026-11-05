@@ -207,6 +207,8 @@ MonoBehaviour:
   currentTarget: {fileID: 0}
   isAttacking: 0
   triggerCollisionEvent: {fileID: 0}
+  minPitch: 0.85
+  maxPitch: 1.15
 --- !u!114 &24262884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,6 +356,103 @@ MonoBehaviour:
   _weapons:
   - Type: 1
     OffHandedWeapon: {fileID: 0}
+--- !u!82 &24262890
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24262878}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 1785fff83652f42399d9b2017b05656c, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &47132298
 GameObject:
   m_ObjectHideFlags: 0
@@ -2826,7 +2925,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damping: {x: 0.1, y: 0.5, z: 0.3}
-  ShoulderOffset: {x: 0.84, y: -0.33, z: -2.39}
+  ShoulderOffset: {x: 0.84, y: 0.04, z: -3.42}
   VerticalArmLength: 0.4
   CameraSide: 1
   CameraDistance: 2
@@ -3208,6 +3307,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dbe4191aa8a702544aef194689f1c4d2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 24262888}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dbe4191aa8a702544aef194689f1c4d2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 24262890}
   m_SourcePrefab: {fileID: 100100000, guid: dbe4191aa8a702544aef194689f1c4d2, type: 3}
 --- !u!1 &763796949
 GameObject:
@@ -3354,6 +3456,8 @@ MonoBehaviour:
   currentTarget: {fileID: 0}
   isAttacking: 0
   triggerCollisionEvent: {fileID: 0}
+  minPitch: 0.85
+  maxPitch: 1.15
 --- !u!114 &763810633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5373,11 +5477,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.509
+      value: 1.879
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -30.531076
+      value: -31.561077
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6205,8 +6309,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1407676186}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.2403029, y: 0.098664984, z: 0.02285749, w: 0.9654001}
-  m_LocalPosition: {x: -1.1587569, y: 8.359371, z: -16.359072}
+  m_LocalRotation: {x: 0.24022849, y: 0.098663196, z: 0.02286509, w: 0.96541864}
+  m_LocalPosition: {x: -1.1726513, y: 7.58662, z: -15.583997}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8852,6 +8956,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28e3a4797f07c1d4aa9a2cf7d2cec690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyCombatSystem
+  minPitch: 0.85
+  maxPitch: 1.15
 --- !u!95 &5467629473261569599
 Animator:
   serializedVersion: 7

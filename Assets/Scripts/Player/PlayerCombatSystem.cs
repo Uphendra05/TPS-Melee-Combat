@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.Timeline;
 using static UnityEngine.Analytics.IAnalytic;
@@ -33,7 +34,11 @@ public class PlayerCombatSystem : MonoBehaviour
     public TriggerCollisionEvent triggerCollisionEvent;
     private WeaponManager weaponManager;
     private AnimationEventPlayer _eventPlayer;
-   
+    private AudioSource weaponAudio;
+
+    [Section("Random Pitch Settings")]
+    [SerializeField] private float minPitch = 0.85f;
+    [SerializeField] private float maxPitch = 1.15f;
 
     private void Start()
     {
@@ -43,7 +48,7 @@ public class PlayerCombatSystem : MonoBehaviour
         controller = GetComponent<CharacterController>();
         playerCameraController = GetComponent<PlayerCameraController>();
         weaponManager = GetComponent<WeaponManager>();
-      
+        weaponAudio = GetComponent<AudioSource>();
 
     }
 
@@ -62,6 +67,7 @@ public class PlayerCombatSystem : MonoBehaviour
 
     public void Attack()
     {
+
         AnimatorStateInfo state = m_Animator.GetCurrentAnimatorStateInfo(0);
         currentTarget = FindClosestEnemy();
         isAttacking = true;
@@ -92,6 +98,9 @@ public class PlayerCombatSystem : MonoBehaviour
 
         if (comboCounter >= weaponCombos.Count)
             comboCounter = 0;
+
+        PlaySwordAttack();
+
     }
 
     private void ResetComboIfIdle()
@@ -157,7 +166,6 @@ public class PlayerCombatSystem : MonoBehaviour
     {
        Debug.Log("Player hit enemy for " + hit.damage + " damage.");
         playerCameraController.ShakeCamera(2.5f, 0.1f);
-
     }
 
     private void OnDrawGizmosSelected()
@@ -168,7 +176,11 @@ public class PlayerCombatSystem : MonoBehaviour
         
     }
 
-
+    public void PlaySwordAttack()
+    {
+        weaponAudio.pitch = Random.Range(minPitch, maxPitch);
+        weaponAudio.Play();
+    }
 
 
 }

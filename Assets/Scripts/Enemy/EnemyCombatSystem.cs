@@ -4,12 +4,17 @@ public class EnemyCombatSystem : MonoBehaviour, IDamageable
 {
     private Animator m_Animator;
     private float angle;
+    private AudioSource audioSource;
 
+    [Header("Random Pitch Settings")]
+    [SerializeField] private float minPitch = 0.85f;
+    [SerializeField] private float maxPitch = 1.15f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         m_Animator = GetComponent<Animator>();  
+        audioSource = GetComponent<AudioSource>();
         
     }
 
@@ -21,8 +26,10 @@ public class EnemyCombatSystem : MonoBehaviour, IDamageable
 
     public void TakeHit(in DamageInfo hit)
     {
-        Debug.Log("EnemyAI TakeHit called >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         EnemyGetHit(hit.attacker.position);
+
+        if(audioSource != null)
+            PlayGetHitSound();
     }
 
 
@@ -42,9 +49,8 @@ public class EnemyCombatSystem : MonoBehaviour, IDamageable
     private float GetHitAngle(Vector3 attackerPosition)
     {
         Vector3 directionToAttacker = (attackerPosition - transform.position).normalized;
-        directionToAttacker.y = 0f; // ignore vertical difference
+        directionToAttacker.y = 0f; 
 
-        // signed angle between enemy's forward and direction to attacker
         return Vector3.SignedAngle(transform.forward, directionToAttacker, Vector3.up);
     }
 
@@ -63,5 +69,9 @@ public class EnemyCombatSystem : MonoBehaviour, IDamageable
             return "OnHitBack";
     }
 
-    
+    public void PlayGetHitSound()
+    {
+        audioSource.pitch = Random.Range(minPitch, maxPitch);
+        audioSource.Play();
+    }
 }
