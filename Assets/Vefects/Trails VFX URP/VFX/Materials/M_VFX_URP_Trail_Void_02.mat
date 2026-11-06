@@ -113,7 +113,7 @@ Material:
     - _Distortion_Amount: 0
     - _Dst: 10
     - _DstBlend: 0
-    - _EmissiveIntensity: 1
+    - _EmissiveIntensity: 1.5
     - _ErosionMultiply: 1
     - _ErosionPower: 1
     - _ErosionSmoothstep: 0

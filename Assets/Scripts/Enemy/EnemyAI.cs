@@ -48,7 +48,8 @@ public class EnemyAI : MonoBehaviour
 
     public void StopMoving()
     {
-        agent.ResetPath();
+        if(agent.hasPath)
+            agent.ResetPath();
     }
 
     public void LookAtPlayer(Vector3 point)

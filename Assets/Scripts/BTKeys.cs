@@ -3,4 +3,6 @@
 public static class BTKeys
 {
     public const string Target = "target";
+    public const string isStunned = "isStunned";
+
 }

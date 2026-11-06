@@ -6,6 +6,11 @@ public class EnemyCombatSystem : MonoBehaviour, IDamageable
     private float angle;
     private AudioSource audioSource;
 
+    [Section("Blood FX")]
+    public GameObject bloodHitFX;
+    public Transform bloodHitFXSpawnPoint;
+
+
     [Header("Random Pitch Settings")]
     [SerializeField] private float minPitch = 0.85f;
     [SerializeField] private float maxPitch = 1.15f;
@@ -30,6 +35,8 @@ public class EnemyCombatSystem : MonoBehaviour, IDamageable
 
         if(audioSource != null)
             PlayGetHitSound();
+
+        SpawnBloodFx();
     }
 
 
@@ -73,5 +80,14 @@ public class EnemyCombatSystem : MonoBehaviour, IDamageable
     {
         audioSource.pitch = Random.Range(minPitch, maxPitch);
         audioSource.Play();
+    }
+
+    private void SpawnBloodFx()
+    {
+        if (bloodHitFX != null)
+        {
+            GameObject bloodFX = Instantiate(bloodHitFX, bloodHitFXSpawnPoint.position, Quaternion.identity);
+            Destroy(bloodFX, 2f);
+        }
     }
 }

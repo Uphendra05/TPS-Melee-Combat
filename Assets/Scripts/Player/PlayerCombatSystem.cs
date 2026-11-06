@@ -56,7 +56,8 @@ public class PlayerCombatSystem : MonoBehaviour
     {
 
         ResetComboIfIdle();
-       
+        
+
     }
 
 
@@ -67,6 +68,7 @@ public class PlayerCombatSystem : MonoBehaviour
 
     public void Attack()
     {
+
 
         AnimatorStateInfo state = m_Animator.GetCurrentAnimatorStateInfo(0);
         currentTarget = FindClosestEnemy();
@@ -105,13 +107,15 @@ public class PlayerCombatSystem : MonoBehaviour
 
     private void ResetComboIfIdle()
     {
-        if (Time.time - lastClickTime > comboResetTime)
+        if (lastClickTime > 0 && Time.time - lastClickTime > comboResetTime)
         {
             comboCounter = 0;
             attackFinished = true;
             lastClickTime = 0;
             isAttacking = false;
             currentTarget = null;
+
+
             weaponManager.UnequipCurrent();
             _eventPlayer.Stop(); 
 

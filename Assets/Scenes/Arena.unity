@@ -1024,10 +1024,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4f5674aa38a85f46b58e1595d59097a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponsManager
+  currentWeapon: {fileID: 0}
   _weapons:
   - Type: 2
-    Weapon: {fileID: 1488569634}
     OffHandedWeapon: {fileID: 1041962353}
+  trails: []
 --- !u!114 &540480593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1101,6 +1102,8 @@ MonoBehaviour:
   currentTarget: {fileID: 0}
   isAttacking: 0
   triggerCollisionEvent: {fileID: 0}
+  minPitch: 0.85
+  maxPitch: 1.15
 --- !u!114 &540480596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2317,6 +2320,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28e3a4797f07c1d4aa9a2cf7d2cec690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyCombatSystem
+  minPitch: 0.85
+  maxPitch: 1.15
 --- !u!95 &1156227006
 Animator:
   serializedVersion: 7
@@ -4187,6 +4192,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1141114114}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &4306963118079324616
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2194989978370409526, guid: 381bcff72ae969c4aadf031d65d64531, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 62.446
+      objectReference: {fileID: 0}
+    - target: {fileID: 2194989978370409526, guid: 381bcff72ae969c4aadf031d65d64531, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.0881
+      objectReference: {fileID: 0}
+    - target: {fileID: 2194989978370409526, guid: 381bcff72ae969c4aadf031d65d64531, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -26.14108
+      objectReference: {fileID: 0}
+    - target: {fileID: 2194989978370409526, guid: 381bcff72ae969c4aadf031d65d64531, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2194989978370409526, guid: 381bcff72ae969c4aadf031d65d64531, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2194989978370409526, guid: 381bcff72ae969c4aadf031d65d64531, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2194989978370409526, guid: 381bcff72ae969c4aadf031d65d64531, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2194989978370409526, guid: 381bcff72ae969c4aadf031d65d64531, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2194989978370409526, guid: 381bcff72ae969c4aadf031d65d64531, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2194989978370409526, guid: 381bcff72ae969c4aadf031d65d64531, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9122163666804987463, guid: 381bcff72ae969c4aadf031d65d64531, type: 3}
+      propertyPath: m_Name
+      value: Sword Hit FX
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 381bcff72ae969c4aadf031d65d64531, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -4200,3 +4262,4 @@ SceneRoots:
   - {fileID: 540480585}
   - {fileID: 1150540462}
   - {fileID: 1156227009}
+  - {fileID: 4306963118079324616}
