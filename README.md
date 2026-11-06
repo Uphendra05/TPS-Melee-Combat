@@ -1,107 +1,136 @@
 # TPS Melee Combat System — Unity
 
-A third person melee combat system built in Unity. Fully script-driven with no animator parameter dependencies. Includes a custom animation event tool inspired by Unreal Engine's Notify system.
+A third person melee combat framework built around one idea: everything is driven by code and data, not animator transition webs. Combos, hit detection, animation events and enemy AI are all modular and reusable.
 
 ---
 
-## Overview
+## Demo
 
-This project is a modular third person melee combat framework built around a single animator state approach. Combos, weapon switching, hit detection, and animation events are all controlled entirely through code — no transition webs, no animator parameters.
+<!-- Replace the paths with your own GIFs, e.g. docs/combo.gif -->
+
+**Combo and lunge**
+
+![Combo demo](docs/combo.gif)
+
+**Animation event tool (timeline + live preview)**
+
+![Animation event tool](docs/animation-event-tool.gif)
+
+**Weapon tracer (scene view gizmos)**
+
+![Weapon tracer](docs/weapon-tracer.gif)
+
+**Enemy AI (chase and strafe)**
+
+![Enemy AI](docs/enemy-ai.gif)
 
 ---
 
 ## Systems
 
-### Combat / Combo System
+### Combo System
 
-Script-driven combo chain using a list of `WeaponDataSO` entries. Each entry in the list is one hit in the combo sequence. The system tracks the current combo index, handles input windows, lunge movement toward the closest enemy during an attack, and resets the chain automatically after an idle timeout.
-
-- Single animator state for all attacks via `AnimatorOverrideController`
-- Combo window based on `normalizedTime` thresholds
-- Lunge toward target during active attack frames
-- Auto reset after configurable idle time
-
----
+A list of `WeaponDataSO` entries, where each entry is one hit in the chain. A single animator state plays every attack through an `AnimatorOverrideController`, and combo timing is based on `normalizedTime`. The chain resets after an idle timeout, and the player lunges toward the closest enemy during active frames.
 
 ### Animation Event Tool
 
-A custom data-driven animation event system inspired by Unreal Engine's Notify system. Events are stored in a `ScriptableObject` and are fully decoupled from the animation clip asset — the clip stays untouched.
+A data-driven alternative to Unity's animation events, inspired by Unreal's Notify system. Events live in a ScriptableObject, so the clip stays untouched and the same clip can have different timings per character.
 
-**Two event types:**
-
-- `Notify` — fires once at a single point in the animation timeline
-- `NotifyState` — active across a duration with `OnNotifyStart`, `OnNotifyTick`, and `OnNotifyEnd` callbacks
-
-**Custom Unity Editor:**
-
-- Visual timeline with color coded notify and state tracks
-- Scrubber that syncs with a live animation preview window
-- Playback controls inside the inspector
-- Add, remove, and recolor events directly in the inspector
-
-**Runtime:**
-
-- `AnimationEventPlayer` lives on the player and is shared across all systems
-- Each system calls `Play(SO)` and `Stop()` — one central `Tick` in `Player.Update` handles the rest
-- Safe interruption via `StopAllActiveStates` so NotifyState callbacks always close cleanly
-
----
+- `Notify` fires once at a point in time.
+- `NotifyState` has `OnNotifyStart`, `OnNotifyTick` and `OnNotifyEnd`, and always closes cleanly if the animation is interrupted.
+- A custom inspector shows a color coded timeline with a scrubber that syncs to a live animation preview.
+- One `AnimationEventPlayer` on the player is shared by every system. Systems call `Play` and `Stop`, and the player ticks it once per frame.
 
 ### Weapon System
 
-Weapons are managed through a `WeaponManager` component. Each `WeaponDataSO` carries its own clip, animation event timings, weapon type, damage, and any other combat data. Weapons are equipped and unequipped per combo hit.
+`WeaponManager` equips weapons by type. Each `WeaponDataSO` carries its clip, event timings and combat data, so every hit in a combo can use a different weapon.
 
-- SO based weapon data
-- Equip by weapon type
-- Each combo hit can use a different weapon
+### Weapon Tracer (Hit Detection)
 
----
+Frame-rate independent melee hit detection. Empty socket transforms sit along the blade's edge, and while a swing is active the tracer casts a sphere from each socket's previous position to its current one every frame. Fast swings and low frame rates can't skip through an enemy.
 
-### Camera System
+- The hit window is driven by an `ANS_MeleeTrace` NotifyState, so damage, knockback and stun are tuned per attack on the timeline.
+- Each target is hit once per swing.
+- Hits pass a `HitData` struct (damage, knockback, hit point, normal, stun, attacker) to `IDamageable.TakeHit`.
+- The tracer also raises an event so the player can react to a landed hit, for example with camera shake.
+- No allocations, and it does no work outside the hit window. Scene view gizmos show the sockets and sweep paths while tuning.
 
-Third person camera that follows and rotates around the player. Handles target locking and smooth transitions.
+### Camera and Targeting
 
----
+Third person camera with smooth follow. Closest enemy detection gives the combat system a lunge direction.
 
-### Enemy AI / Target Finding
+### Enemy AI: Behavior Tree
 
-Closest enemy detection used by the combat system to determine lunge direction and target acquisition during an attack.
+Every behavior is a reusable ScriptableObject recipe, and each enemy builds its own tree and its own data from it at runtime. One asset can drive any number of enemies with no shared state.
+
+- `ExternalBehaviorTree` is the recipe asset. `BehaviorTree` is the component on each enemy that owns its blackboard and ticks the tree.
+- Nodes: `Sequence`, `Selector` (re-checks higher priorities and aborts lower ones), decorators and action leaves. `OnExit` also runs on abort, so cleanup lives in one place.
+- The blackboard holds typed shared variables, looked up once and read by key constants.
+- `NPC` is the only script that drives the `NavMeshAgent`. `NPCAnimation` drives the locomotion blend tree from real movement. `EnemyCombatSystem` implements `IDamageable` and plays front or back hit reactions.
+- Current behaviors are Chase and Strafe. A `Selector` with strafe first and chase second makes enemies approach, then circle the target.
 
 ---
 
 ## Architecture
 
-\```
+```
 Player
-  ├── Animator + AnimatorOverrideController
-  ├── AnimationEventPlayer         ← shared, ticked every frame
-  ├── CombatSystem                 ← calls Play / Stop on eventPlayer
-  ├── WeaponManager                ← equips per combo hit
-  └── Camera / Targeting
-\```
+  ├── AnimationEventPlayer      ← shared, ticked every frame
+  ├── CombatSystem              ← plays combo data
+  └── WeaponManager             ← equips weapon, owns its WeaponTracer
+
+Enemy
+  ├── NPC                       ← only script that drives the NavMeshAgent
+  ├── NPCAnimation
+  ├── BehaviorTree              ← built from an ExternalBehaviorTree asset
+  └── EnemyCombatSystem         ← IDamageable
+```
 
 ---
 
-## How to Use
+## Quick Start
 
-**Setting up an attack combo:**
+**Attack combo**
 
-1. Create a `WeaponDataSO` via `Create → Combat → WeaponData`
-2. Assign an `AnimationClip` and set the `Animator State Name` to match your animator state
-3. Add `Notify` or `NotifyState` events in the custom timeline inspector
-4. Add entries to the `weaponCombos` list on your `CombatSystem` in order of the combo chain
+1. Create a `WeaponDataSO` and assign a clip and the animator state name.
+2. Add Notify and NotifyState events on the timeline, including an `ANS_MeleeTrace` for the hit window.
+3. Add the entries to `weaponCombos` in order.
+4. Add `AnimationEventPlayer` to the player and call its `Tick` once per frame.
 
-**Setting up the event player:**
+**Enemy**
 
-1. Add `AnimationEventPlayer` to your player GameObject
-2. Pass the reference to `CombatSystem` via `Init(eventPlayer)`
-3. Call `eventPlayer.Tick(normalizedTime)` in `Player.Update`
+1. Bake a NavMesh.
+2. Add `NavMeshAgent`, `NPC`, `NPCAnimation`, `BehaviorTree` and `EnemyCombatSystem` to the prefab, and assign a behavior tree asset.
+3. Place an `EnemySpawner` with the prefab, the player and spawn points.
+
+**New behavior tree**
+
+```csharp
+[CreateAssetMenu(menuName = "Game/AI/BehaviorTrees/Standoff")]
+public class StandoffTree : ExternalBehaviorTree
+{
+    public override void CreateData(BehaviorTreeData data) => data.Add<Transform>(BTKeys.Target, null);
+
+    public override Node CreateBehaviorTree() =>
+        new Selector()
+            .AddChild(new Strafe(6f))
+            .AddChild(new MoveToTarget(6f));
+}
+```
+
+---
+
+## Roadmap
+
+- Hit stun, knockback and launch states for enemies
+- Attack tokens so only a few enemies attack at once
+- Vision and hearing sensors
+- More behavior tree nodes and a debug view of the active path
+- Boss phases
+- Packaging the animation event tool as a standalone Unity package
 
 ---
 
 ## Built With
 
-- Unity
-- C#
-- ScriptableObject architecture
-- Custom IMGUI editor tooling
+Unity, C#, ScriptableObjects, NavMesh, custom IMGUI editor tooling
