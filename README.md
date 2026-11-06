@@ -51,9 +51,9 @@ A data-driven alternative to Unity's animation events, inspired by Unreal's Noti
 
 Frame-rate independent melee hit detection. Empty socket transforms sit along the blade's edge, and while a swing is active the tracer casts a sphere from each socket's previous position to its current one every frame. Fast swings and low frame rates can't skip through an enemy.
 
-- The hit window is driven by an `ANS_MeleeTrace` NotifyState, so damage, knockback and stun are tuned per attack on the timeline.
+- The hit window is driven by an `ANS_WeaponTracer` NotifyState, so damage, knockback and stun are tuned per attack on the timeline.
 - Each target is hit once per swing.
-- Hits pass a `HitData` struct (damage, knockback, hit point, normal, stun, attacker) to `IDamageable.TakeHit`.
+- Hits pass a `DamageInfo` struct (damage, knockback, hit point, normal, stun, attacker) to `IDamageable.TakeHit`.
 - The tracer also raises an event so the player can react to a landed hit, for example with camera shake.
 - No allocations, and it does no work outside the hit window. Scene view gizmos show the sockets and sweep paths while tuning.
 
@@ -68,7 +68,7 @@ Every behavior is a reusable ScriptableObject recipe, and each enemy builds its 
 - `ExternalBehaviorTree` is the recipe asset. `BehaviorTree` is the component on each enemy that owns its blackboard and ticks the tree.
 - Nodes: `Sequence`, `Selector` (re-checks higher priorities and aborts lower ones), decorators and action leaves. `OnExit` also runs on abort, so cleanup lives in one place.
 - The blackboard holds typed shared variables, looked up once and read by key constants.
-- `NPC` is the only script that drives the `NavMeshAgent`. `NPCAnimation` drives the locomotion blend tree from real movement. `EnemyCombatSystem` implements `IDamageable` and plays front or back hit reactions.
+- `EnemyAI` is the only script that drives the `NavMeshAgent`. `EnemyAIAnimation` drives the locomotion blend tree from real movement. `EnemyCombatSystem` implements `IDamageable` and plays front or back hit reactions and will be used to drive actual combat.
 - Current behaviors are Chase and Strafe. A `Selector` with strafe first and chase second makes enemies approach, then circle the target.
 
 ---
@@ -82,8 +82,8 @@ Player
   └── WeaponManager             ← equips weapon, owns its WeaponTracer
 
 Enemy
-  ├── NPC                       ← only script that drives the NavMeshAgent
-  ├── NPCAnimation
+  ├── EnemyAI                   ← only script that drives the NavMeshAgent
+  ├── EnemyAIAnimation          ← Drives Animations
   ├── BehaviorTree              ← built from an ExternalBehaviorTree asset
   └── EnemyCombatSystem         ← IDamageable
 ```
@@ -95,14 +95,14 @@ Enemy
 **Attack combo**
 
 1. Create a `WeaponDataSO` and assign a clip and the animator state name.
-2. Add Notify and NotifyState events on the timeline, including an `ANS_MeleeTrace` for the hit window.
+2. Add Notify and NotifyState events on the timeline, including an `ANS_WeaponTracer` for the hit window.
 3. Add the entries to `weaponCombos` in order.
 4. Add `AnimationEventPlayer` to the player and call its `Tick` once per frame.
 
 **Enemy**
 
 1. Bake a NavMesh.
-2. Add `NavMeshAgent`, `NPC`, `NPCAnimation`, `BehaviorTree` and `EnemyCombatSystem` to the prefab, and assign a behavior tree asset.
+2. Add `NavMeshAgent`, `EnemyAI`, `EnemyAIAnimation`, `BehaviorTree` and `EnemyCombatSystem` to the prefab, and assign a behavior tree asset.
 3. Place an `EnemySpawner` with the prefab, the player and spawn points.
 
 **New behavior tree**
@@ -125,14 +125,19 @@ public class StandoffTree : ExternalBehaviorTree
 ## Roadmap
 
 - Hit stun, knockback and launch states for enemies
-- Attack tokens so only a few enemies attack at once
-- Vision and hearing sensors
+- Attack tokens so only a few enemies attack at once  
 - More behavior tree nodes and a debug view of the active path
 - Boss phases
-- Packaging the animation event tool as a standalone Unity package
+- Proper Level Design and Arena for Boss
+- Small Story-Driven Combat Experience
+- Improved Shaders and VFX
 
 ---
 
-## Built With
+## Credits & Acknowledgements
 
-Unity, C#, ScriptableObjects, NavMesh, custom IMGUI editor tooling
+- Zeus GameDev Academy : www.youtube.com/@zeusgamedevacademy
+- 용개발 : https://www.youtube.com/@user-jyj96
+- The Game Dev Cave : www.youtube.com/@thegamedevcave
+
+Thank you for sharing your knowledge and helping me build a stronger foundation in modular game development!
