@@ -1,3 +1,5 @@
+
+
 # TPS Melee Combat System — Unity
 
 A third person melee combat framework built around one idea: everything is driven by code and data, not animator transition webs. Combos, hit detection, animation events and enemy AI are all modular and reusable.
@@ -10,19 +12,19 @@ A third person melee combat framework built around one idea: everything is drive
 
 **Combo and lunge**
 
-![Combo demo](docs/combo.gif)
+https://github.com/user-attachments/assets/f7f4a90a-0f95-49fa-98d8-5da9828a58a4
 
 **Animation event tool (timeline + live preview)**
 
-![Animation event tool](docs/animation-event-tool.gif)
+https://github.com/user-attachments/assets/22366317-b600-4337-9d69-7f2a4ae29fa5
 
 **Weapon tracer (scene view gizmos)**
 
-![Weapon tracer](docs/weapon-tracer.gif)
+https://github.com/user-attachments/assets/eee4188c-231a-493d-92fb-627750a1bf8a
 
 **Enemy AI (chase and strafe)**
 
-![Enemy AI](docs/enemy-ai.gif)
+https://github.com/user-attachments/assets/4a3fe40f-0c64-41d5-9edc-3a0e1bbf8601
 
 ---
 
